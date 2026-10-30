@@ -8,17 +8,11 @@ const setLinks = (selector, url) => {
 
 setLinks("[data-avito-link]", SITE_CONFIG.avitoProfileUrl);
 
-const heroPhoto = document.querySelector("[data-hero-photo]");
-if (heroPhoto && SITE_CONFIG.heroImage) {
-  heroPhoto.src = SITE_CONFIG.heroImage;
-}
-
 const catalogRoot = document.querySelector("#catalog-content");
 const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (char) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 }[char]));
 
-// Источник каталога переключается одной строкой в config.js: photos / avito.
 async function prepareCatalogSource() {
   if (CATALOG_SOURCE === "photos") {
     return { mode: "photos", items: PHOTO_ITEMS };
@@ -26,7 +20,6 @@ async function prepareCatalogSource() {
 
   if (CATALOG_SOURCE === "avito") {
     if (!SITE_CONFIG.avitoFeedUrl) return { mode: "avito-not-connected", items: [] };
-
     try {
       const response = await fetch(SITE_CONFIG.avitoFeedUrl, {
         headers: { Accept: "application/json" },
@@ -52,19 +45,18 @@ function renderCatalog(state) {
         ${state.items.map((item, index) => {
           const image = item.image || "";
           const alt = item.alt || item.title || "Фотография мужского костюма";
-          const title = item.title || "Мужской костюм";
+          const title = item.title || `Модель ${String(index + 1).padStart(2, "0")}`;
           const url = item.url || SITE_CONFIG.avitoProfileUrl;
           return `
-            <a class="catalog-card" href="${escapeHtml(url)}" target="_blank" rel="noopener"
-               aria-label="${escapeHtml(title)} — открыть на Авито">
+            <a class="catalog-card" href="${escapeHtml(url)}" target="_blank" rel="noopener">
               <div class="catalog-image-wrap">
-                <img src="${escapeHtml(image)}" alt="${escapeHtml(alt)}"
-                     loading="lazy" decoding="async">
+                <img src="${escapeHtml(image)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async">
                 <span class="catalog-index">${String(index + 1).padStart(2, "0")}</span>
+                <span class="catalog-image-cta">СМОТРЕТЬ ↗</span>
               </div>
               <div class="catalog-card-meta">
                 <span>${escapeHtml(title)}</span>
-                <span class="catalog-card-link">СМОТРЕТЬ НА АВИТО ↗</span>
+                <span class="catalog-card-link">${state.mode === "avito" ? "ОБЪЯВЛЕНИЕ АВИТО" : "ФОТОГРАФИЯ"}</span>
               </div>
             </a>`;
         }).join("")}
@@ -94,7 +86,6 @@ if (toggle && nav) {
     toggle.setAttribute("aria-expanded", String(!isOpen));
     nav.classList.toggle("is-open", !isOpen);
   });
-
   nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
     toggle.setAttribute("aria-expanded", "false");
     nav.classList.remove("is-open");

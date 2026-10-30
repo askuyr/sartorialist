@@ -4,136 +4,168 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#012e24">
-  <meta name="description" content="THE SARTORIALIST CLUB — мужские костюмы. Фотографии и профиль на Авито.">
+  <meta name="description" content="THE SARTORIALIST CLUB — мужские костюмы. Фотографии моделей и переход в профиль Авито.">
   <title>THE SARTORIALIST CLUB — Мужские костюмы</title>
-  <link rel="preload" as="image" href="assets/images/editorial-hero.webp">
+  <link rel="preload" as="image" href="assets/images/hero-banner.webp">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-  <div class="topline">
-    <span>THE SARTORIALIST CLUB</span>
-    <span>МУЖСКИЕ КОСТЮМЫ</span>
-  </div>
+  <main class="site-shell" id="top">
+    <header class="site-header">
+      <a class="wordmark" href="#top" aria-label="THE SARTORIALIST CLUB — главная">
+        <span class="wordmark-small">THE</span>
+        <span class="wordmark-main">SARTORIALIST</span>
+        <span class="wordmark-club">CLUB</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+      <nav class="main-nav" aria-label="Основная навигация">
+        <a href="#collection">Костюмы</a>
+        <a href="#about">О магазине</a>
+        <a href="#details">Детали</a>
+        <a href="#avito">Авито</a>
+      </nav>
+      <a class="header-link" data-avito-link href="https://www.avito.ru/brands/i205036214"
+         target="_blank" rel="noopener">Профиль Авито <span>↗</span></a>
+    </header>
 
-  <header class="site-header">
-    <a class="wordmark" href="#top" aria-label="THE SARTORIALIST CLUB — на главную">
-      <span class="wordmark-small">THE</span>
-      <span class="wordmark-main">SARTORIALIST</span>
-      <span class="wordmark-club">CLUB</span>
-    </a>
-    <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">
-      <span></span><span></span>
-    </button>
-    <nav class="main-nav" aria-label="Основная навигация">
-      <a href="#collection">Костюмы</a>
-      <a href="#details">Детали</a>
-      <a href="#avito">Авито</a>
-    </nav>
-    <a class="header-link" data-avito-link href="https://www.avito.ru/brands/i205036214"
-       target="_blank" rel="noopener">Профиль Авито <span aria-hidden="true">↗</span></a>
-  </header>
-
-  <main id="top">
-    <section class="hero section-green">
-      <div class="hero-copy">
+    <section class="hero">
+      <img class="hero-image" src="assets/images/hero-banner.webp"
+           alt="Мужчина в классическом костюме в интерьере магазина" fetchpriority="high">
+      <div class="hero-shade"></div>
+      <div class="hero-content">
         <p class="eyebrow">THE SARTORIALIST CLUB</p>
-        <h1>Мужские<br><em>костюмы.</em></h1>
-        <p class="hero-subtitle">Сдержанный стиль.<br>Внимание к деталям.</p>
-        <a class="button button-gold" href="#collection">Смотреть коллекцию <span aria-hidden="true">↓</span></a>
+        <h1>Мужской стиль<br><em>без лишнего.</em></h1>
+        <p class="hero-description">Классические костюмы.<br>Внимание к силуэту и деталям.</p>
+        <a class="button button-gold" href="#collection">Смотреть костюмы <span>↓</span></a>
       </div>
-      <div class="hero-visual">
-        <div class="hero-frame"></div>
-        <img class="hero-photo" data-hero-photo src="assets/images/editorial-hero.webp"
-             alt="Мужчина в классическом костюме в пространстве магазина"
-             fetchpriority="high">
-        <span class="photo-index">THE SARTORIALIST CLUB</span>
-      </div>
-      <div class="hero-bottomline">
-        <span>МУЖСКАЯ КЛАССИКА</span>
-        <span>THE SARTORIALIST CLUB</span>
-      </div>
+      <div class="hero-caption"><span>THE SARTORIALIST CLUB</span><span>МУЖСКИЕ КОСТЮМЫ</span></div>
     </section>
 
-    <section class="intro section-cream" id="collection">
-      <div class="section-meta"><span>01 / КОЛЛЕКЦИЯ</span><span>THE SARTORIALIST CLUB</span></div>
-      <div class="intro-grid">
-        <h2>Костюмы<br><em>в фотографиях.</em></h2>
-        <div class="intro-copy">
-          <p>Посмотрите представленные модели. Актуальные объявления и условия покупки — в профиле на Авито.</p>
-          <a class="text-link" data-avito-link href="https://www.avito.ru/brands/i205036214"
-             target="_blank" rel="noopener">Перейти в профиль Авито <span aria-hidden="true">↗</span></a>
+    <section class="quick-links" aria-label="Разделы сайта">
+      <a class="quick-card" href="#collection">
+        <span class="quick-number">01</span>
+        <span class="quick-title">Костюмы</span>
+        <span class="quick-copy">Фотографии представленных моделей</span>
+        <span class="quick-arrow">↗</span>
+      </a>
+      <a class="quick-card" href="#details">
+        <span class="quick-number">02</span>
+        <span class="quick-title">Детали</span>
+        <span class="quick-copy">Ткань, отделка и элементы костюма</span>
+        <span class="quick-arrow">↗</span>
+      </a>
+      <a class="quick-card" href="#about">
+        <span class="quick-number">03</span>
+        <span class="quick-title">Магазин</span>
+        <span class="quick-copy">Фотографии пространства и образов</span>
+        <span class="quick-arrow">↗</span>
+      </a>
+      <a class="quick-card quick-card-accent" data-avito-link href="https://www.avito.ru/brands/i205036214"
+         target="_blank" rel="noopener">
+        <span class="quick-number">04</span>
+        <span class="quick-title">Авито</span>
+        <span class="quick-copy">Актуальные объявления и условия покупки</span>
+        <span class="quick-arrow">↗</span>
+      </a>
+    </section>
+
+    <section class="about-section" id="about">
+      <div class="about-copy">
+        <p class="eyebrow">THE SARTORIALIST CLUB / О МАГАЗИНЕ</p>
+        <h2>Классика,<br><em>выраженная в деталях.</em></h2>
+        <p>THE SARTORIALIST CLUB — мужские костюмы. На сайте собраны фотографии моделей, деталей и образов.</p>
+        <p>Актуальные объявления, наличие и условия покупки смотрите в профиле на Авито.</p>
+        <a class="text-link" data-avito-link href="https://www.avito.ru/brands/i205036214"
+           target="_blank" rel="noopener">Открыть профиль Авито <span>↗</span></a>
+      </div>
+      <a class="about-image" href="#details" aria-label="Посмотреть фотографии деталей">
+        <img src="assets/images/editorial-store-02.webp" alt="Интерьер магазина с мужскими костюмами" loading="lazy">
+        <span>THE SARTORIALIST CLUB</span>
+      </a>
+    </section>
+
+    <section class="collection-section" id="collection">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">01 / ФОТОГРАФИИ</p>
+          <h2>Костюмы<br><em>в кадре.</em></h2>
         </div>
+        <p class="section-intro">Выберите фотографию, чтобы перейти к профилю Авито и посмотреть актуальные предложения.</p>
       </div>
       <div id="catalog-content" class="catalog-content" aria-live="polite"></div>
     </section>
 
-    <section class="gallery section-green" id="details">
-      <div class="section-meta section-meta-light"><span>02 / ДЕТАЛИ</span><span>ФОТОГАЛЕРЕЯ</span></div>
-      <div class="gallery-heading">
-        <h2>Фактура.<br><em>Силуэт. Детали.</em></h2>
-        <p>Крупные планы ткани, отделки и фотографии пространства.</p>
-      </div>
-      <div class="editorial-grid">
-        <figure class="editorial-card editorial-card-feature">
-          <img src="assets/images/editorial-store-01.webp" alt="Мужчина в костюме в интерьере магазина" loading="lazy">
-          <figcaption>ОБРАЗ</figcaption>
-        </figure>
-        <figure class="editorial-card">
-          <img src="assets/images/detail-01.webp" alt="Крупный план лацкана и нагрудного кармана костюма" loading="lazy">
-          <figcaption>ЛИНИИ И ФАКТУРА</figcaption>
-        </figure>
-        <figure class="editorial-card">
-          <img src="assets/images/detail-02.webp" alt="Деталь рукава и пуговиц костюма" loading="lazy">
-          <figcaption>ОТДЕЛКА</figcaption>
-        </figure>
-        <figure class="editorial-card">
-          <img src="assets/images/detail-03.webp" alt="Фактура синей ткани и пуговицы" loading="lazy">
-          <figcaption>МАТЕРИАЛ</figcaption>
-        </figure>
-        <figure class="editorial-card">
-          <img src="assets/images/detail-04.webp" alt="Крупный план клетчатого костюма" loading="lazy">
-          <figcaption>РИСУНОК ТКАНИ</figcaption>
-        </figure>
-        <figure class="editorial-card editorial-card-wide">
-          <img src="assets/images/editorial-store-02.webp" alt="Интерьер с рейлами мужской одежды и креслами" loading="lazy">
-          <figcaption>ПРОСТРАНСТВО</figcaption>
-        </figure>
-        <figure class="editorial-card editorial-card-wide">
-          <img src="assets/images/editorial-store-03.webp" alt="Мужская одежда на рейлах и зона для посетителей" loading="lazy">
-          <figcaption>THE SARTORIALIST CLUB</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <section class="avito-section section-cream" id="avito">
-      <div class="section-meta"><span>03 / ПОКУПКА</span><span>АВИТО</span></div>
-      <div class="avito-grid">
+    <section class="details-section" id="details">
+      <div class="section-heading section-heading-light">
         <div>
-          <p class="eyebrow">THE SARTORIALIST CLUB</p>
-          <h2>Выберите<br><em>свой костюм.</em></h2>
+          <p class="eyebrow">02 / ВНИМАНИЕ К ДЕТАЛЯМ</p>
+          <h2>Фактура.<br><em>Посадка. Отделка.</em></h2>
         </div>
-        <div class="avito-copy">
-          <p>Актуальные объявления, наличие и условия покупки смотрите в профиле на Авито.</p>
-          <a class="button button-green" data-avito-link href="https://www.avito.ru/brands/i205036214"
-             target="_blank" rel="noopener">Перейти в профиль Авито <span aria-hidden="true">↗</span></a>
-        </div>
+        <p class="section-intro">Крупные планы костюмов из фотогалереи.</p>
       </div>
-      <div class="avito-rule"><span>THE SARTORIALIST CLUB</span><span>АВИТО ↗</span></div>
-    </section>
-  </main>
 
-  <footer class="site-footer section-green">
-    <a class="wordmark footer-wordmark" href="#top">
-      <span class="wordmark-small">THE</span>
-      <span class="wordmark-main">SARTORIALIST</span>
-      <span class="wordmark-club">CLUB</span>
-    </a>
-    <div class="footer-links">
-      <a data-avito-link href="https://www.avito.ru/brands/i205036214"
-         target="_blank" rel="noopener">Профиль Авито ↗</a>
-    </div>
-    <div class="footer-bottom"><span>THE SARTORIALIST CLUB</span><a href="#top">НАВЕРХ ↑</a></div>
-  </footer>
+      <div class="feature-grid">
+        <a class="feature-photo feature-photo-large" href="assets/images/editorial-store-01.webp" target="_blank" rel="noopener">
+          <img src="assets/images/editorial-store-01.webp" alt="Мужчина в костюме в интерьере" loading="lazy">
+          <span>ОБРАЗ ↗</span>
+        </a>
+        <article class="feature-note">
+          <p class="eyebrow">01 / МАТЕРИАЛЫ</p>
+          <h3>Ткань и фактура</h3>
+          <p>Рассмотрите фактуру и рисунок ткани на фотографиях костюмов.</p>
+        </article>
+        <article class="feature-note">
+          <p class="eyebrow">02 / ОТДЕЛКА</p>
+          <h3>Внимание к деталям</h3>
+          <p>Пуговицы, лацканы, карманы и другие элементы классического костюма.</p>
+        </article>
+        <a class="feature-photo" href="assets/images/detail-01.webp" target="_blank" rel="noopener">
+          <img src="assets/images/detail-01.webp" alt="Крупный план лацкана костюма" loading="lazy">
+          <span>ЛАЦКАН ↗</span>
+        </a>
+        <a class="feature-photo" href="assets/images/detail-02.webp" target="_blank" rel="noopener">
+          <img src="assets/images/detail-02.webp" alt="Крупный план пуговиц на рукаве" loading="lazy">
+          <span>ОТДЕЛКА ↗</span>
+        </a>
+        <article class="feature-note">
+          <p class="eyebrow">03 / КОЛЛЕКЦИЯ</p>
+          <h3>Разные образы</h3>
+          <p>Фотографии костюмов в классических и более выразительных сочетаниях.</p>
+        </article>
+        <a class="feature-photo feature-photo-wide" href="assets/images/editorial-store-03.webp" target="_blank" rel="noopener">
+          <img src="assets/images/editorial-store-03.webp" alt="Рейлы с мужскими костюмами в магазине" loading="lazy">
+          <span>THE SARTORIALIST CLUB ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="avito-section" id="avito">
+      <div class="avito-monogram">SC</div>
+      <div class="avito-copy">
+        <p class="eyebrow">THE SARTORIALIST CLUB</p>
+        <h2>Продолжить<br><em>на Авито.</em></h2>
+        <p>Актуальные объявления, наличие и условия покупки — в профиле магазина.</p>
+        <a class="button button-gold" data-avito-link href="https://www.avito.ru/brands/i205036214"
+           target="_blank" rel="noopener">Перейти в профиль Авито <span>↗</span></a>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <a class="wordmark footer-wordmark" href="#top">
+        <span class="wordmark-small">THE</span>
+        <span class="wordmark-main">SARTORIALIST</span>
+        <span class="wordmark-club">CLUB</span>
+      </a>
+      <div class="footer-right">
+        <span>МУЖСКИЕ КОСТЮМЫ</span>
+        <a data-avito-link href="https://www.avito.ru/brands/i205036214"
+           target="_blank" rel="noopener">ПРОФИЛЬ АВИТО ↗</a>
+      </div>
+      <div class="footer-bottom"><span>THE SARTORIALIST CLUB</span><a href="#top">НАВЕРХ ↑</a></div>
+    </footer>
+  </main>
 
   <script type="module" src="assets/js/main.js"></script>
 </body>
