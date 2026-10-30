@@ -1,93 +1,66 @@
 import { CATALOG_SOURCE, SITE_CONFIG, PHOTO_ITEMS } from "./config.js";
 
-const setLinks = (selector, url) => {
-  document.querySelectorAll(selector).forEach((link) => {
-    link.href = url;
-  });
-};
-
-setLinks("[data-avito-link]", SITE_CONFIG.avitoProfileUrl);
+// Keep every Avito link in one place so the profile URL is easy to change.
+document.querySelectorAll("[data-avito-link]").forEach((link) => {
+  link.href = SITE_CONFIG.avitoProfileUrl;
+});
 
 const catalogRoot = document.querySelector("#catalog-content");
-const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (char) => ({
+const escapeHtml = (value = "") => String(value).replace(/[&<>\"']/g, (char) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 }[char]));
 
-async function prepareCatalogSource() {
-  if (CATALOG_SOURCE === "photos") {
-    return { mode: "photos", items: PHOTO_ITEMS };
-  }
-
-  if (CATALOG_SOURCE === "avito") {
-    if (!SITE_CONFIG.avitoFeedUrl) return { mode: "avito-not-connected", items: [] };
+async function getCatalog() {
+  if (CATALOG_SOURCE === "photos") return { mode: "photos", items: PHOTO_ITEMS };
+  if (CATALOG_SOURCE === "avito" && SITE_CONFIG.avitoFeedUrl) {
     try {
-      const response = await fetch(SITE_CONFIG.avitoFeedUrl, {
-        headers: { Accept: "application/json" },
-      });
+      const response = await fetch(SITE_CONFIG.avitoFeedUrl, { headers: { Accept: "application/json" } });
       if (!response.ok) throw new Error(`Feed error: ${response.status}`);
       const items = await response.json();
       return { mode: "avito", items: Array.isArray(items) ? items : [] };
     } catch (error) {
-      console.error("Не удалось загрузить объявления Авито:", error);
-      return { mode: "avito-error", items: [] };
+      console.error("Avito feed error", error);
+      return { mode: "error", items: [] };
     }
   }
-
+  if (CATALOG_SOURCE === "avito") return { mode: "not-connected", items: [] };
   return { mode: "photos", items: PHOTO_ITEMS };
 }
 
-function renderCatalog(state) {
+function renderCatalog({ mode, items }) {
   if (!catalogRoot) return;
-
-  if ((state.mode === "photos" || state.mode === "avito") && state.items.length) {
-    catalogRoot.innerHTML = `
-      <div class="catalog-grid">
-        ${state.items.map((item, index) => {
-          const image = item.image || "";
-          const alt = item.alt || item.title || "Фотография мужского костюма";
-          const title = item.title || `Модель ${String(index + 1).padStart(2, "0")}`;
-          const url = item.url || SITE_CONFIG.avitoProfileUrl;
-          return `
-            <a class="catalog-card" href="${escapeHtml(url)}" target="_blank" rel="noopener">
-              <div class="catalog-image-wrap">
-                <img src="${escapeHtml(image)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async">
-                <span class="catalog-index">${String(index + 1).padStart(2, "0")}</span>
-                <span class="catalog-image-cta">СМОТРЕТЬ ↗</span>
-              </div>
-              <div class="catalog-card-meta">
-                <span>${escapeHtml(title)}</span>
-                <span class="catalog-card-link">${state.mode === "avito" ? "ОБЪЯВЛЕНИЕ АВИТО" : "ФОТОГРАФИЯ"}</span>
-              </div>
-            </a>`;
-        }).join("")}
-      </div>`;
+  if (items.length) {
+    catalogRoot.innerHTML = `<div class="catalog-grid">${items.map((item, i) => {
+      const image = item.image || "";
+      const alt = item.alt || "Фотография мужского костюма";
+      const url = item.url || SITE_CONFIG.avitoProfileUrl;
+      return `<a class="catalog-card" href="${escapeHtml(url)}" target="_blank" rel="noopener" aria-label="Открыть профиль Авито">
+        <div class="catalog-image">
+          <img src="${escapeHtml(image)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async">
+          <span class="catalog-num">${String(i + 1).padStart(2, "0")}</span>
+          <span class="catalog-open">ПРОФИЛЬ АВИТО ↗</span>
+        </div>
+        <div class="catalog-meta"><strong>Фотография ${String(i + 1).padStart(2, "0")}</strong><small>THE SARTORIALIST CLUB</small></div>
+      </a>`;
+    }).join("")}</div>`;
     return;
   }
-
-  const message = state.mode === "avito-error"
-    ? "Не удалось загрузить объявления. Перейдите в профиль Авито."
-    : "Автоматическая загрузка объявлений пока не подключена.";
-  catalogRoot.innerHTML = `
-    <div class="catalog-empty">
-      <span>${escapeHtml(message)}</span>
-      <a class="text-link" href="${escapeHtml(SITE_CONFIG.avitoProfileUrl)}"
-         target="_blank" rel="noopener">Перейти в профиль Авито ↗</a>
-    </div>`;
+  const text = mode === "error" ? "Не удалось загрузить объявления." : "Каталог объявлений пока не подключён.";
+  catalogRoot.innerHTML = `<div class="catalog-empty"><span>${text}</span><a class="under-link" href="${escapeHtml(SITE_CONFIG.avitoProfileUrl)}" target="_blank" rel="noopener">Перейти в профиль <span>↗</span></a></div>`;
 }
 
-prepareCatalogSource().then(renderCatalog);
-window.sartorialistCatalog = prepareCatalogSource;
+getCatalog().then(renderCatalog);
 
-const toggle = document.querySelector(".menu-toggle");
-const nav = document.querySelector(".main-nav");
-if (toggle && nav) {
-  toggle.addEventListener("click", () => {
-    const isOpen = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", String(!isOpen));
-    nav.classList.toggle("is-open", !isOpen);
+const menuButton = document.querySelector(".nav-toggle");
+const nav = document.querySelector(".nav");
+if (menuButton && nav) {
+  menuButton.addEventListener("click", () => {
+    const open = menuButton.getAttribute("aria-expanded") === "true";
+    menuButton.setAttribute("aria-expanded", String(!open));
+    nav.classList.toggle("is-open", !open);
   });
   nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
-    toggle.setAttribute("aria-expanded", "false");
+    menuButton.setAttribute("aria-expanded", "false");
     nav.classList.remove("is-open");
   }));
 }
