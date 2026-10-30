@@ -7,24 +7,18 @@ const setLinks = (selector, url) => {
 };
 
 setLinks("[data-avito-link]", SITE_CONFIG.avitoProfileUrl);
-setLinks("[data-gallery-link]", SITE_CONFIG.galleryUrl);
 
-const firstPhoto = PHOTO_ITEMS[0];
-if (firstPhoto) {
-  const heroPhoto = document.querySelector("[data-hero-photo]");
-  if (heroPhoto) {
-    heroPhoto.src = firstPhoto.image;
-    heroPhoto.alt = firstPhoto.alt;
-  }
+const heroPhoto = document.querySelector("[data-hero-photo]");
+if (heroPhoto && SITE_CONFIG.heroImage) {
+  heroPhoto.src = SITE_CONFIG.heroImage;
 }
 
 const catalogRoot = document.querySelector("#catalog-content");
-const escapeHtml = (value = "") => String(value).replace(/[&<>\"']/g, (char) => ({
+const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (char) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 }[char]));
 
-// Переключатель источника каталога: photos / avito.
-// В карточках намеренно не выводятся цены и размеры.
+// Источник каталога переключается одной строкой в config.js: photos / avito.
 async function prepareCatalogSource() {
   if (CATALOG_SOURCE === "photos") {
     return { mode: "photos", items: PHOTO_ITEMS };
@@ -32,13 +26,16 @@ async function prepareCatalogSource() {
 
   if (CATALOG_SOURCE === "avito") {
     if (!SITE_CONFIG.avitoFeedUrl) return { mode: "avito-not-connected", items: [] };
+
     try {
-      const response = await fetch(SITE_CONFIG.avitoFeedUrl, { headers: { Accept: "application/json" } });
+      const response = await fetch(SITE_CONFIG.avitoFeedUrl, {
+        headers: { Accept: "application/json" },
+      });
       if (!response.ok) throw new Error(`Feed error: ${response.status}`);
       const items = await response.json();
       return { mode: "avito", items: Array.isArray(items) ? items : [] };
     } catch (error) {
-      console.error("Не удалось загрузить ленту Авито:", error);
+      console.error("Не удалось загрузить объявления Авито:", error);
       return { mode: "avito-error", items: [] };
     }
   }
@@ -48,30 +45,42 @@ async function prepareCatalogSource() {
 
 function renderCatalog(state) {
   if (!catalogRoot) return;
-  if (state.mode === "photos") {
-    if (state.items.length > 1) {
-      catalogRoot.innerHTML = `<div class=\"catalog-grid\">${state.items.map((item) => `
-        <a class=\"catalog-card\" href=\"${escapeHtml(SITE_CONFIG.galleryUrl)}\" target=\"_blank\" rel=\"noopener\">
-          <img src=\"${escapeHtml(item.image)}\" alt=\"${escapeHtml(item.alt || 'Фотография костюма')}\" loading=\"lazy\">
-          <span>ОТКРЫТЬ ФОТОГАЛЕРЕЮ ↗</span>
-        </a>`).join("")}</div>`;
-    } else {
-      catalogRoot.innerHTML = `<div class=\"catalog-empty\"><span>ФОТОГАЛЕРЕЯ</span><a class=\"text-link\" href=\"${escapeHtml(SITE_CONFIG.galleryUrl)}\" target=\"_blank\" rel=\"noopener\">Открыть фотографии ↗</a></div>`;
-    }
+
+  if ((state.mode === "photos" || state.mode === "avito") && state.items.length) {
+    catalogRoot.innerHTML = `
+      <div class="catalog-grid">
+        ${state.items.map((item, index) => {
+          const image = item.image || "";
+          const alt = item.alt || item.title || "Фотография мужского костюма";
+          const title = item.title || "Мужской костюм";
+          const url = item.url || SITE_CONFIG.avitoProfileUrl;
+          return `
+            <a class="catalog-card" href="${escapeHtml(url)}" target="_blank" rel="noopener"
+               aria-label="${escapeHtml(title)} — открыть на Авито">
+              <div class="catalog-image-wrap">
+                <img src="${escapeHtml(image)}" alt="${escapeHtml(alt)}"
+                     loading="lazy" decoding="async">
+                <span class="catalog-index">${String(index + 1).padStart(2, "0")}</span>
+              </div>
+              <div class="catalog-card-meta">
+                <span>${escapeHtml(title)}</span>
+                <span class="catalog-card-link">СМОТРЕТЬ НА АВИТО ↗</span>
+              </div>
+            </a>`;
+        }).join("")}
+      </div>`;
     return;
   }
 
-  if (state.mode === "avito" && state.items.length) {
-    catalogRoot.innerHTML = `<div class=\"catalog-grid\">${state.items.map((item) => `
-      <a class=\"catalog-card\" href=\"${escapeHtml(item.url || SITE_CONFIG.avitoProfileUrl)}\" target=\"_blank\" rel=\"noopener\">
-        ${item.image ? `<img src=\"${escapeHtml(item.image)}\" alt=\"${escapeHtml(item.title || 'Фотография объявления')}\" loading=\"lazy\">` : ""}
-        <span>${escapeHtml(item.title || "ОТКРЫТЬ ОБЪЯВЛЕНИЕ")} ↗</span>
-      </a>`).join("")}</div>`;
-    return;
-  }
-
-  const message = state.mode === "avito-error" ? "Не удалось загрузить объявления. Откройте профиль Авито." : "Интеграция Авито пока не подключена. Актуальные объявления доступны в профиле.";
-  catalogRoot.innerHTML = `<div class=\"catalog-empty\"><span>${escapeHtml(message)}</span><a class=\"text-link\" href=\"${escapeHtml(SITE_CONFIG.avitoProfileUrl)}\" target=\"_blank\" rel=\"noopener\">Перейти в профиль Авито ↗</a></div>`;
+  const message = state.mode === "avito-error"
+    ? "Не удалось загрузить объявления. Перейдите в профиль Авито."
+    : "Автоматическая загрузка объявлений пока не подключена.";
+  catalogRoot.innerHTML = `
+    <div class="catalog-empty">
+      <span>${escapeHtml(message)}</span>
+      <a class="text-link" href="${escapeHtml(SITE_CONFIG.avitoProfileUrl)}"
+         target="_blank" rel="noopener">Перейти в профиль Авито ↗</a>
+    </div>`;
 }
 
 prepareCatalogSource().then(renderCatalog);
@@ -85,6 +94,7 @@ if (toggle && nav) {
     toggle.setAttribute("aria-expanded", String(!isOpen));
     nav.classList.toggle("is-open", !isOpen);
   });
+
   nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
     toggle.setAttribute("aria-expanded", "false");
     nav.classList.remove("is-open");

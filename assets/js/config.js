@@ -1,29 +1,34 @@
 /**
  * НАСТРОЙКИ САЙТА
- * Для переключения источника каталога поменяйте только CATALOG_SOURCE:
- *   "photos" — фотографии из PHOTO_ITEMS (режим включён сейчас)
- *   "avito"  — JSON-лента с вашего серверного endpoint
  *
- * ВАЖНО: GitHub Pages — статический хостинг. Не помещайте client_secret Авито
- * в этот файл или любой другой frontend-код. Для API понадобится отдельный
- * безопасный backend/serverless endpoint, который вернёт JSON с товарами.
+ * Быстрое переключение источника каталога:
+ *   "photos" — локальные фотографии в assets/images/ (включено)
+ *   "avito"  — объявления из JSON endpoint (подключим позже)
+ *
+ * Для GitHub Pages нельзя помещать client_secret Авито в браузерный код.
+ * При подключении API используйте отдельный backend/serverless endpoint.
  */
 export const CATALOG_SOURCE = "photos";
 
 export const SITE_CONFIG = {
-  avitoProfileUrl: "https://www.avito.ru/brands/i205036214?gdlkerfdnwq=101&page_from=from_item_header&iid=8242877395&page_from=from_item_card&iid=8242877395",
-  galleryUrl: "https://ellenutelle.gallery.photo/gallery/maksim-kostumy-14rmew/",
-  // Заполнить адресом backend endpoint при подключении Avito API.
-  // Endpoint должен возвращать массив объектов: { title, image, url }.
+  avitoProfileUrl: "https://www.avito.ru/brands/i205036214",
+  heroImage: "assets/images/editorial-hero.webp",
+  // Заполнить URL защищённого endpoint при подключении Авито API.
+  // Endpoint должен возвращать JSON-массив объектов { title, image, url }.
   avitoFeedUrl: "",
 };
 
-// Сейчас из переданной галереи доступно одно изображение с деталями костюма.
-// После получения остальных фото добавляйте их сюда, лучше как локальные файлы
-// в assets/images/, чтобы сайт не зависел от сторонней фотогалереи.
 export const PHOTO_ITEMS = [
-  {
-    image: "https://storage.vigbo.tech/p/w1440/gallery-photo/159b739a-54a8-43a5-8bfe-60c70a3631d8/8095d2fd-0609-465d-89c0-8b25c8460548/original/7AxxRTrYqxiQ5x3CpnGe_.jpg",
-    alt: "Деталь тёмного костюма в тонкую полоску",
-  },
+  { image: "assets/images/suit-01.webp", alt: "Тёмно-серый костюм с галстуком" },
+  { image: "assets/images/suit-02.webp", alt: "Коричневый костюм в тонкую полоску" },
+  { image: "assets/images/suit-03.webp", alt: "Тёмно-синий классический костюм" },
+  { image: "assets/images/suit-04.webp", alt: "Светло-голубой костюм" },
+  { image: "assets/images/suit-05.webp", alt: "Графитовый костюм" },
+  { image: "assets/images/suit-06.webp", alt: "Синий костюм" },
+  { image: "assets/images/suit-07.webp", alt: "Серый костюм в клетку" },
+  { image: "assets/images/suit-08.webp", alt: "Тёмно-синий костюм с галстуком" },
+  { image: "assets/images/suit-09.webp", alt: "Коричневый костюм" },
+  { image: "assets/images/suit-10.webp", alt: "Светлый бежевый костюм" },
+  { image: "assets/images/suit-11.webp", alt: "Голубой костюм в клетку" },
+  { image: "assets/images/suit-12.webp", alt: "Тёмно-синий костюм" },
 ];

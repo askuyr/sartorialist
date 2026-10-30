@@ -150,3 +150,50 @@ h2 { font-family: var(--serif); font-size: clamp(46px, 6vw, 82px); line-height: 
   .gallery-cta-copy h3 { font-size: 43px; }
   .gallery-cta-panel .button { grid-column: 1 / -1; justify-self: start; }
 }
+
+
+/* Локальная фотогалерея и карточки костюмов */
+.catalog-content { border-top: 1px solid var(--line-light); padding-top: 24px; }
+.catalog-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 16px; }
+.catalog-card { display: block; border: 0; padding: 0; color: var(--ink); }
+.catalog-image-wrap { position: relative; overflow: hidden; background: var(--sand); }
+.catalog-card img { width: 100%; aspect-ratio: 4 / 5; height: auto; object-fit: cover; transition: transform .65s ease; }
+.catalog-card:hover img { transform: scale(1.035); }
+.catalog-index { position: absolute; left: 13px; top: 13px; padding: 7px 9px; color: var(--green); background: var(--cream); font-size: 8px; letter-spacing: .16em; }
+.catalog-card-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 13px 0 4px; border-bottom: 1px solid var(--line-light); }
+.catalog-card-meta > span:first-child { font-family: var(--serif); font-size: 17px; }
+.catalog-card-link { color: #8b7650; font-size: 8px; letter-spacing: .13em; white-space: nowrap; }
+.catalog-empty { min-height: 90px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.catalog-empty > span { max-width: 460px; color: #536058; font-family: var(--serif); font-size: clamp(17px, 2vw, 24px); }
+.catalog-empty .text-link { margin: 0; white-space: nowrap; }
+
+.editorial-grid { display: grid; grid-template-columns: 1.15fr .85fr .85fr; gap: 14px; align-items: stretch; }
+.editorial-card { margin: 0; position: relative; overflow: hidden; background: var(--green-deep); min-height: 230px; }
+.editorial-card img { width: 100%; height: 100%; min-height: 230px; max-height: 430px; object-fit: cover; transition: transform .7s ease; }
+.editorial-card:hover img { transform: scale(1.025); }
+.editorial-card-feature { grid-row: span 2; }
+.editorial-card-feature img { min-height: 475px; max-height: 620px; }
+.editorial-card-wide { grid-column: span 1; }
+.editorial-card figcaption { position: absolute; left: 12px; bottom: 12px; padding: 8px 10px; color: var(--green); background: var(--gold); font-size: 8px; letter-spacing: .17em; }
+
+@media (max-width: 760px) {
+  .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 10px; }
+  .catalog-card-meta { display: block; }
+  .catalog-card-meta > span:first-child { display: block; margin-bottom: 8px; font-size: 16px; }
+  .catalog-card-link { font-size: 7px; }
+  .editorial-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .editorial-card { min-height: 180px; }
+  .editorial-card img { min-height: 180px; }
+  .editorial-card-feature { grid-row: span 2; }
+  .editorial-card-feature img { min-height: 370px; }
+  .editorial-card-wide { grid-column: span 2; }
+  .editorial-card-wide img { max-height: 280px; }
+}
+
+@media (max-width: 420px) {
+  .catalog-grid { gap: 18px 8px; }
+  .catalog-index { left: 8px; top: 8px; }
+  .editorial-grid { grid-template-columns: 1fr 1fr; }
+  .editorial-card-feature { grid-column: 1 / -1; grid-row: auto; }
+  .editorial-card-feature img { min-height: 390px; }
+}
