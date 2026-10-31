@@ -6,6 +6,7 @@
 export const CATALOG_SOURCE = "photos";
 
 export const SITE_CONFIG = {
+  phone: "+79312992222",
   avitoProfileUrl: "https://www.avito.ru/brands/i205036214",
   galleryUrl: "https://ellenutelle.gallery.photo/gallery/maksim-kostumy-14rmew/",
   // Заполняется после создания backend endpoint. Не вставлять client_secret сюда.

@@ -40,12 +40,14 @@
 export const CATALOG_SOURCE = "photos";
 
 export const SITE_CONFIG = {
+  phone: "+79312992222",
   avitoProfileUrl: "https://www.avito.ru/brands/i205036214",
   galleryUrl: "https://ellenutelle.gallery.photo/gallery/maksim-kostumy-14rmew/",
   avitoFeedUrl: "",
 };
 ```
 
+- `phone` — номер телефона для ссылок `tel:` (шапка, меню, контактный блок, подвал).
 - `avitoProfileUrl` — профиль магазина, используется во всех кнопках и ссылках.
 - `galleryUrl` — внешняя фотогалерея.
 - `catalogSource`:

@@ -306,6 +306,8 @@ h2 em { font-weight: 400; font-style: normal; }
 .header__link:hover { color: var(--cream); }
 .header__link--gold { color: var(--gold); }
 .header__link--gold:hover { color: var(--cream); }
+.header__link--phone { color: var(--cream); font-variant-numeric: tabular-nums; }
+.header__link--phone:hover { color: var(--gold); }
 .header__divider { width: 1px; height: 14px; background: rgba(176, 151, 103, .35); }
 
 .nav-toggle {
@@ -1041,6 +1043,46 @@ h2 em { font-weight: 400; font-style: normal; }
 }
 .contact__copy .btn { margin-top: 32px; }
 
+.contact__phone {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 30px;
+}
+.contact__phone-label {
+  color: var(--gold-ink);
+  font-size: 8px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+.contact__phone-value {
+  position: relative;
+  width: max-content;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: clamp(28px, 3.1vw, 42px);
+  line-height: 1.05;
+  letter-spacing: .01em;
+}
+.contact__phone-value::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -5px;
+  left: 0;
+  height: 1px;
+  background: var(--gold-ink);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .35s var(--ease);
+}
+.contact__phone:hover .contact__phone-value::after,
+.contact__phone:focus-visible .contact__phone-value::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
 .contact__seal {
   position: relative;
   display: grid;
@@ -1175,7 +1217,7 @@ h2 em { font-weight: 400; font-style: normal; }
 }
 
 @media (max-width: 1024px) {
-  .header__link:not(.header__link--gold) { display: none; }
+  .header__link:not(.header__link--gold):not(.header__link--phone) { display: none; }
   .header__divider { display: none; }
   .hero__content { width: min(540px, 56%); }
   .story__head { grid-template-columns: 1fr 200px; }

@@ -27,6 +27,13 @@ $$("[data-gallery-link]").forEach((link) => {
   link.rel = "noopener";
 });
 
+const phoneHref = SITE_CONFIG.phone ? `tel:${String(SITE_CONFIG.phone).replace(/[^\d+]/g, "")}` : "";
+if (phoneHref) {
+  $$("[data-phone-link]").forEach((link) => { link.href = phoneHref; });
+} else {
+  $$("[data-phone-link]").forEach((link) => link.remove());
+}
+
 /* ---------- Sticky header ---------- */
 
 const header = $(".header");
