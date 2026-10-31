@@ -25,11 +25,12 @@ const IMAGE_DIR = path.join(ROOT, "assets", "images", "avito");
 const PORT = Number(process.env.AVITO_CDP_PORT || 9333);
 const TIMEOUT_MIN = Number(process.env.AVITO_TIMEOUT_MIN || 12);
 const MAX_PAGES = 10;
-const START_URL = "https://www.avito.ru/profile/items";
-const BRAND_URL = "https://www.avito.ru/brands/i205036214";
 
 const args = process.argv.slice(2);
 const SHOULD_PUSH = args.includes("--push");
+const urlArg = args.find((arg) => arg.startsWith("--url="));
+const START_URL = urlArg ? urlArg.slice("--url=".length) : "https://www.avito.ru/profile/items";
+const BRAND_URL = "https://www.avito.ru/brands/i205036214";
 
 const log = (...parts) => console.log(...parts);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -112,12 +113,27 @@ class Cdp {
 
 const EXTRACT_ITEMS = `(() => {
   const clean = (value) => (value || "").replace(/\\s+/g, " ").trim();
-  const containers = [...document.querySelectorAll('[data-marker="item"]')];
-  const nodes = containers.length ? containers : [...document.querySelectorAll('a[data-marker="item-title"], a[itemprop="name"]')].map((a) => a.closest('[data-marker="item"], article, li, div') || a);
+  const isItemUrl = (href) => /avito\\.ru\\/[a-z0-9_\\-]+\\/[a-z0-9_\\-]+\\/\\d+/i.test(href || "");
+
+  let cards = [...document.querySelectorAll('[data-marker="item"], [data-marker="catalog-serp-item"], [data-marker="item-card"]')];
+  if (!cards.length) {
+    const anchors = [...document.querySelectorAll('a[href]')].filter((a) => isItemUrl(a.href));
+    cards = anchors.map((anchor) => {
+      let node = anchor;
+      for (let step = 0; step < 4 && node.parentElement; step += 1) {
+        node = node.parentElement;
+        if (node.querySelector('img')) break;
+      }
+      return node;
+    });
+  }
+
   const seen = new Set();
   const items = [];
-  for (const node of nodes) {
-    const link = node.querySelector('a[data-marker="item-title"]') || node.querySelector('a[itemprop="url"]') || (node.matches('a[href]') ? node : node.querySelector('a[href]'));
+  for (const node of cards) {
+    const link = node.querySelector('a[data-marker="item-title"]')
+      || node.querySelector('a[itemprop="url"]')
+      || (node.matches('a[href]') ? node : node.querySelector('a[href]'));
     const url = link ? link.href : "";
     if (!url || !/avito\\.ru/.test(url)) continue;
     const id = (url.match(/_(\\d+)/) || [])[1] || "";
@@ -131,13 +147,14 @@ const EXTRACT_ITEMS = `(() => {
       const img = node.querySelector('img');
       title = clean(img ? img.getAttribute("alt") : "");
     }
+    if (!title) title = "Объявление на Авито";
 
     let priceText = "";
     const priceNode = node.querySelector('[data-marker="item-price"]') || node.querySelector('[itemprop="price"]') || node.querySelector('meta[itemprop="price"]');
     if (priceNode) priceText = clean(priceNode.getAttribute("content") || priceNode.textContent);
     if (!priceText) {
-      const match = clean(node.textContent).match(/(\\d[\\d\\s\\u00a0]{2,})\\s*\\u20bd/);
-      if (match) priceText = match[1].replace(/\\s+/g, " ") + " \\u20bd";
+      const match = clean(node.textContent).match(/(\\d[\\d\\s\\u00a0]{2,})\\s*(?:\\u20bd|руб\\.?)/i);
+      if (match) priceText = match[1].replace(/\\s+/g, " ").trim() + " \\u20bd";
     }
 
     let image = "";
@@ -165,7 +182,38 @@ async function collectPage(cdp) {
 }
 
 async function hasItems(cdp) {
-  return cdp.evaluate(`document.querySelectorAll('[data-marker="item"]').length > 0`);
+  const raw = await cdp.evaluate(EXTRACT_ITEMS);
+  const items = JSON.parse(raw || "[]");
+  return items.length > 0;
+}
+
+const LOGIN_CHECK = `(() => {
+  const body = document.body ? document.body.innerText : "";
+  if (/Вход и регистрация/i.test(body)) return false;
+  if (/Объявления пользователя скрыты/i.test(body)) return false;
+  if (/(user_id|sessid|avito_uid)/i.test(document.cookie || "")) return true;
+  return /Мои объявления|Выйти|Личный кабинет/i.test(body);
+})()`;
+
+async function isLoggedIn(cdp) {
+  try {
+    return await cdp.evaluate(LOGIN_CHECK);
+  } catch {
+    return false;
+  }
+}
+
+async function pageState(cdp) {
+  return cdp.evaluate(`(() => JSON.stringify({
+    title: document.title || "",
+    url: location.href,
+    body: (document.body ? document.body.innerText : "").slice(0, 1500)
+  }))()`).then((raw) => JSON.parse(raw || "{}")).catch(() => ({ title: "", url: "", body: "" }));
+}
+
+async function navigate(cdp, url) {
+  await cdp.send("Page.navigate", { url });
+  await sleep(4000);
 }
 
 async function gotoNextPage(cdp) {
@@ -253,13 +301,34 @@ async function main() {
     log("");
 
     const deadline = Date.now() + TIMEOUT_MIN * 60 * 1000;
+    const startedAt = Date.now();
+    const shown = new Set();
     let ready = false;
+    let switched = false;
+
     while (Date.now() < deadline) {
       await sleep(2000);
       try {
-        if (await hasItems(cdp)) { ready = true; break; }
-        const title = await cdp.evaluate("document.title");
-        if (/огранич|проверк/i.test(title || "")) log("Avito просит подтверждение — пройдите проверку в окне браузера.");
+        const signedIn = await isLoggedIn(cdp);
+        if (signedIn && await hasItems(cdp)) { ready = true; break; }
+        const state = await pageState(cdp);
+        const hint = /Доступ ограничен|проверк/i.test(`${state.title} ${state.body}`)
+          ? "Avito требует проверку IP — пройдите её в открытомся окне."
+          : /Объявления пользователя скрыты|Вход и регистрация|войдите в свой профиль/i.test(state.body)
+            ? "Войдите в аккаунт Avito в открытомся окне — без входа объявления скрыты."
+            : "";
+        if (hint && !shown.has(hint)) {
+          shown.add(hint);
+          log(hint);
+        }
+        if (Date.now() - startedAt > 20000 && Date.now() - startedAt < 23000) log(`Сейчас открыто: ${state.url}`);
+
+        const half = startedAt + (deadline - startedAt) / 2;
+        if (!switched && Date.now() > half) {
+          switched = true;
+          log("Пробую страницу бренда…");
+          await navigate(cdp, BRAND_URL);
+        }
       } catch {
         /* страница перезагружается */
       }
@@ -280,6 +349,14 @@ async function main() {
 
     const items = [...collected.values()].filter((item) => item.title);
     if (!items.length) throw new Error("Не удалось получить данные объявлений.");
+
+    log("");
+    log("Найденные объявления:");
+    items.forEach((item, index) => {
+      log(`  ${index + 1}. ${item.priceText || "цена не указана"} — ${item.title}`);
+      log(`     ${item.url}`);
+    });
+    log("");
 
     log("Скачиваю фотографии…");
     const output = [];
@@ -321,13 +398,20 @@ async function main() {
       log("  git push origin main");
     }
   } finally {
-    try {
-      await fetch(`http://127.0.0.1:${PORT}/json/version`);
-      await fetch(`http://127.0.0.1:${PORT}/json/close`).catch(() => {});
-    } catch {
-      /* ignore */
-    }
+    await closeBrowser();
     child.kill();
+  }
+}
+
+async function closeBrowser() {
+  try {
+    const version = await (await fetch(`http://127.0.0.1:${PORT}/json/version`)).json();
+    if (!version.webSocketDebuggerUrl) return;
+    const browser = await new Cdp(version.webSocketDebuggerUrl).connect();
+    await browser.send("Browser.close").catch(() => {});
+    browser.socket.close();
+  } catch {
+    /* ignore */
   }
 }
 
