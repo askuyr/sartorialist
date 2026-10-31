@@ -65,6 +65,14 @@ ul { margin: 0; padding: 0; list-style: none; }
   outline-offset: 4px;
 }
 
+.btn span,
+.hero__secondary span,
+.link-underline span,
+.product__arrow,
+.announce a,
+.footer__col a,
+.rail-btn { font-variant-emoji: text; }
+
 .shell {
   width: 100%;
   max-width: var(--shell);

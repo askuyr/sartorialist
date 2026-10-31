@@ -150,7 +150,7 @@ function renderCatalog({ items }) {
 
   if (!items.length) {
     if (totalNode) totalNode.textContent = "00";
-    catalogRoot.innerHTML = `<p class="catalog-empty"><span>Каталог пока не заполнен.</span><a class="link-underline" data-avito-link href="${escapeHtml(SITE_CONFIG.avitoProfileUrl)}" target="_blank" rel="noopener">Перейти в профиль <span aria-hidden="true">↗</span></a></p>`;
+    catalogRoot.innerHTML = `<p class="catalog-empty"><span>Каталог пока не заполнен.</span><a class="link-underline" data-avito-link href="${escapeHtml(SITE_CONFIG.avitoProfileUrl)}" target="_blank" rel="noopener">Перейти в профиль <span aria-hidden="true">↗︎</span></a></p>`;
     const avitoLink = $("[data-avito-link]", catalogRoot);
     if (avitoLink) avitoLink.href = SITE_CONFIG.avitoProfileUrl;
     return;
@@ -174,14 +174,14 @@ function renderCatalog({ items }) {
         <div class="product__media">
           <img src="${escapeHtml(image)}"${srcset} alt="${escapeHtml(alt)}" width="1000" height="1500" loading="lazy" decoding="async">
           <span class="product__no">${number}</span>
-          <span class="product__view"><span>Костюмы на Авито</span><span aria-hidden="true">↗</span></span>
+          <span class="product__view"><span>Костюмы на Авито</span><span aria-hidden="true">↗︎</span></span>
         </div>
         <div class="product__meta">
           <div>
             <h3 class="product__name">${escapeHtml(name)}</h3>
             <p class="product__sub">Референс ${number}</p>
           </div>
-          <span class="product__arrow" aria-hidden="true">↗</span>
+          <span class="product__arrow" aria-hidden="true">↗︎</span>
         </div>
       </a>
     </article>`;
