@@ -233,9 +233,7 @@ h2 em { font-weight: 400; font-style: normal; }
   height: var(--header-h);
   margin: 0 auto;
   padding: 0 var(--pad);
-  transition: height .3s ease;
 }
-.header.is-scrolled .header__inner { height: 76px; }
 
 .nav {
   display: flex;
@@ -500,7 +498,7 @@ h2 em { font-weight: 400; font-style: normal; }
   text-transform: uppercase;
 }
 .marquee i { color: var(--gold); font-size: 10px; font-style: normal; }
-@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes marquee { to { transform: translateX(-25%); } }
 
 /* ---------- Duo campaign ---------- */
 

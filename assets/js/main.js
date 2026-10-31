@@ -274,14 +274,17 @@ function initRail() {
     dragged = false;
     startX = event.clientX;
     startLeft = rail.scrollLeft;
-    rail.classList.add("is-dragging");
-    rail.setPointerCapture(event.pointerId);
   });
 
   rail.addEventListener("pointermove", (event) => {
     if (!isDown) return;
     const delta = event.clientX - startX;
-    if (Math.abs(delta) > 5) dragged = true;
+    if (!dragged) {
+      if (Math.abs(delta) <= 5) return;
+      dragged = true;
+      rail.classList.add("is-dragging");
+      rail.setPointerCapture(event.pointerId);
+    }
     rail.scrollLeft = startLeft - delta;
   });
 
