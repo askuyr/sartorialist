@@ -1,4 +1,4 @@
-import { SITE_CONFIG, PHOTO_ITEMS } from "./config.js?v=11";
+import { SITE_CONFIG, PHOTO_ITEMS } from "./config.js?v=12";
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -173,12 +173,12 @@ function renderCatalog({ items }) {
         <div class="product__media">
           <img src="${escapeHtml(item.image || "")}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async">
           <span class="product__no">${number}</span>
-          <span class="product__view"><span>Открыть в Авито</span><span aria-hidden="true">↗</span></span>
+          <span class="product__view"><span>Костюмы на Авито</span><span aria-hidden="true">↗</span></span>
         </div>
         <div class="product__meta">
           <div>
             <h3 class="product__name">${escapeHtml(name)}</h3>
-            <p class="product__sub">Фотография ${number}</p>
+            <p class="product__sub">Референс ${number}</p>
           </div>
           <span class="product__arrow" aria-hidden="true">↗</span>
         </div>
@@ -187,7 +187,7 @@ function renderCatalog({ items }) {
   }).join("");
 
   catalogRoot.innerHTML = `
-    <div class="catalog-rail" data-rail tabindex="0" role="region" aria-label="Фотографии коллекции">
+    <div class="catalog-rail" data-rail tabindex="0" role="region" aria-label="Референсы костюмов">
       ${cards}
     </div>
     <div class="rail-progress" aria-hidden="true"><span></span></div>
