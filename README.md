@@ -28,8 +28,9 @@
 
 - Фотографии хранятся локально в `assets/images/`.
 - Внешние ссылки на изображения не используются.
-- Не добавлены цены, размеры, отзывы, рейтинги, выдуманные показатели и неподтверждённые характеристики.
-- Карточки каталога ведут в профиль Авито.
+- Не добавлены выдуманные цены, размеры, отзывы, рейтинги, показатели и неподтверждённые характеристики.
+- Цены и названия берутся только из реальных объявлений Авито (файл `data/avito-items.json`).
+- Карточки каталога ведут на конкретное объявление, если данные синхронизированы, иначе — в профиль Авито.
 - Фотогалерея открывается по ссылке из `SITE_CONFIG.galleryUrl`.
 
 ## Настройка ссылок
@@ -37,12 +38,13 @@
 Откройте `assets/js/config.js`:
 
 ```js
-export const CATALOG_SOURCE = "photos";
+export const CATALOG_SOURCE = "avito";
 
 export const SITE_CONFIG = {
   phone: "+79312992222",
   avitoProfileUrl: "https://www.avito.ru/brands/i205036214",
   galleryUrl: "https://ellenutelle.gallery.photo/gallery/maksim-kostumy-14rmew/",
+  avitoDataUrl: "data/avito-items.json",
   avitoFeedUrl: "",
 };
 ```
@@ -50,11 +52,57 @@ export const SITE_CONFIG = {
 - `phone` — номер телефона для ссылок `tel:` (шапка, меню, контактный блок, подвал).
 - `avitoProfileUrl` — профиль магазина, используется во всех кнопках и ссылках.
 - `galleryUrl` — внешняя фотогалерея.
-- `catalogSource`:
-  - `"photos"` — локальные фотографии, включено сейчас;
-  - `"avito"` — загрузка объявлений из JSON endpoint после подключения backend.
+- `avitoDataUrl` — файл с объявлениями и ценами.
+- `CATALOG_SOURCE`:
+  - `"avito"` — объявления и цены из `data/avito-items.json`; если файл пуст, сайт сам откатывается на локальные фотографии;
+  - `"photos"` — только локальные фотографии из `assets/images/`;
+  - `"feed"` — загрузка объявлений с защищённого backend endpoint (`SITE_CONFIG.avitoFeedUrl`).
 
-Для интеграции Авито нужно заполнить `SITE_CONFIG.avitoFeedUrl` адресом защищённого endpoint. Не храните `client_secret` в GitHub Pages или frontend-коде.
+Для интеграции Авито через официальный API нужно заполнить `SITE_CONFIG.avitoFeedUrl` адресом защищённого endpoint. Не храните `client_secret` в GitHub Pages или frontend-коде.
+
+## Синхронизация объявлений с Авито (без API-ключа)
+
+Avito скрывает объявления от гостей и блокирует автоматические запросы, поэтому сайт читает файл `data/avito-items.json`, который собирает локальный скрипт через вашу сессию в браузере.
+
+1. Запустите скрипт из корня репозитория:
+
+   ```bash
+   node tools/sync-avito.mjs
+   ```
+
+2. В открывшемся окне браузера войдите в Avito и откройте «Мои объявления». Если Avito попросит проверку IP — пройдите её в этом окне.
+3. Скрипт соберёт названия, цены, ссылки, скачает фотографии в `assets/images/avito/` и запишет `data/avito-items.json`.
+4. Опубликуйте изменения:
+
+   ```bash
+   git add data/avito-items.json assets/images/avito
+   git commit -m "chore: update Avito listings"
+   git push origin main
+   ```
+
+   Или одной командой: `node tools/sync-avito.mjs --push`.
+
+Профиль браузера хранится в `tools/.avito-profile/` и в репозиторий не попадает. Пока файл пуст, сайт показывает 24 локальных фото; после синхронизации в ленте появляются реальные названия и цены, а карточки ведут на конкретные объявления.
+
+Формат `data/avito-items.json`:
+
+```json
+{
+  "updatedAt": "2026-10-31T12:00:00.000Z",
+  "source": "https://www.avito.ru/brands/i205036214",
+  "count": 1,
+  "items": [
+    {
+      "id": "1234567890",
+      "title": "Название объявления",
+      "price": 15000,
+      "priceText": "15 000 ₽",
+      "url": "https://www.avito.ru/...",
+      "image": "assets/images/avito/1234567890.jpg"
+    }
+  ]
+}
+```
 
 ## Локальный просмотр
 
