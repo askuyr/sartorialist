@@ -1,0 +1,7 @@
+# Локальный профиль браузера для синхронизации с Авито
+.avito-profile/
+tools/.avito-profile/
+
+# macOS
+.DS_Store
+Thumbs.db
