@@ -1,4 +1,4 @@
-import { SITE_CONFIG, PHOTO_ITEMS } from "./config.js?v=12";
+import { SITE_CONFIG, PHOTO_ITEMS } from "./config.js?v=13";
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -143,10 +143,6 @@ if ("IntersectionObserver" in window && sectionLinks.size) {
 
 const catalogRoot = $("#catalog-content");
 
-async function getCatalog() {
-  return { mode: "photos", items: PHOTO_ITEMS };
-}
-
 function renderCatalog({ items }) {
   if (!catalogRoot) return;
 
@@ -167,11 +163,16 @@ function renderCatalog({ items }) {
     const name = item.name || `Костюм ${number}`;
     const alt = item.alt || name;
     const url = item.url || SITE_CONFIG.avitoProfileUrl;
+    const image = item.image || "";
+    const smallImage = image.replace(/\.webp$/, "-640.webp");
+    const srcset = image.endsWith(".webp")
+      ? ` srcset="${escapeHtml(smallImage)} 640w, ${escapeHtml(image)} 1000w" sizes="(max-width: 700px) 74vw, 23vw"`
+      : "";
 
     return `<article class="product" style="--i:${index}">
       <a class="product__link" href="${escapeHtml(url)}" target="_blank" rel="noopener">
         <div class="product__media">
-          <img src="${escapeHtml(item.image || "")}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async">
+          <img src="${escapeHtml(image)}"${srcset} alt="${escapeHtml(alt)}" width="1000" height="1500" loading="lazy" decoding="async">
           <span class="product__no">${number}</span>
           <span class="product__view"><span>Костюмы на Авито</span><span aria-hidden="true">↗</span></span>
         </div>
@@ -303,4 +304,4 @@ function initRail() {
   update();
 }
 
-getCatalog().then(renderCatalog);
+renderCatalog({ items: PHOTO_ITEMS });
