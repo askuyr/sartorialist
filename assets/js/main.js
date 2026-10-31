@@ -1,4 +1,4 @@
-import { CATALOG_SOURCE, SITE_CONFIG, PHOTO_ITEMS } from "./config.js?v=10";
+import { SITE_CONFIG, PHOTO_ITEMS } from "./config.js?v=11";
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -143,75 +143,18 @@ if ("IntersectionObserver" in window && sectionLinks.size) {
 
 const catalogRoot = $("#catalog-content");
 
-async function fetchAvitoData() {
-  const url = `${SITE_CONFIG.avitoDataUrl}?v=${Date.now()}`;
-  const response = await fetch(url, { headers: { Accept: "application/json" }, cache: "no-store" });
-  if (!response.ok) throw new Error(`Avito data error: ${response.status}`);
-  const payload = await response.json();
-  const items = Array.isArray(payload) ? payload : payload?.items;
-  return Array.isArray(items) ? items : [];
-}
-
 async function getCatalog() {
-  if (CATALOG_SOURCE === "photos") return { mode: "photos", items: PHOTO_ITEMS };
-
-  if (CATALOG_SOURCE === "feed" && SITE_CONFIG.avitoFeedUrl) {
-    try {
-      const response = await fetch(SITE_CONFIG.avitoFeedUrl, { headers: { Accept: "application/json" } });
-      if (!response.ok) throw new Error(`Feed error: ${response.status}`);
-      const items = await response.json();
-      return { mode: "avito", items: Array.isArray(items) ? items : [] };
-    } catch (error) {
-      console.error("Avito feed error", error);
-      return { mode: "error", items: [] };
-    }
-  }
-
-  if (CATALOG_SOURCE === "avito") {
-    try {
-      const items = await fetchAvitoData();
-      if (items.length) return { mode: "avito", items };
-      return { mode: "photos", items: PHOTO_ITEMS };
-    } catch {
-      return { mode: "photos", items: PHOTO_ITEMS };
-    }
-  }
-
   return { mode: "photos", items: PHOTO_ITEMS };
 }
 
-const rubles = new Intl.NumberFormat("ru-RU");
-
-function formatPrice(item) {
-  if (item.priceText) return String(item.priceText);
-  const value = Number(item.price);
-  if (!Number.isFinite(value) || value <= 0) return "";
-  return `${rubles.format(value)} ₽`;
-}
-
-function safeItemUrl(value) {
-  try {
-    const url = new URL(value, location.href);
-    if (url.protocol === "https:" && /(^|\.)avito\.ru$/i.test(url.hostname)) return url.href;
-  } catch {
-    /* ignore */
-  }
-  return SITE_CONFIG.avitoProfileUrl;
-}
-
-function renderCatalog({ mode, items }) {
+function renderCatalog({ items }) {
   if (!catalogRoot) return;
 
   const totalNode = $("[data-rail-total]");
-  const sourceNode = $("[data-rail-source]");
-  if (sourceNode) sourceNode.textContent = mode === "avito" ? "объявления и цены с Авито" : "фотографии";
 
   if (!items.length) {
     if (totalNode) totalNode.textContent = "00";
-    const message = mode === "error"
-      ? "Не удалось загрузить объявления."
-      : "Каталог объявлений пока не подключён.";
-    catalogRoot.innerHTML = `<p class="catalog-empty"><span>${message}</span><a class="link-underline" data-avito-link href="${escapeHtml(SITE_CONFIG.avitoProfileUrl)}" target="_blank" rel="noopener">Перейти в профиль <span aria-hidden="true">↗</span></a></p>`;
+    catalogRoot.innerHTML = `<p class="catalog-empty"><span>Каталог пока не заполнен.</span><a class="link-underline" data-avito-link href="${escapeHtml(SITE_CONFIG.avitoProfileUrl)}" target="_blank" rel="noopener">Перейти в профиль <span aria-hidden="true">↗</span></a></p>`;
     const avitoLink = $("[data-avito-link]", catalogRoot);
     if (avitoLink) avitoLink.href = SITE_CONFIG.avitoProfileUrl;
     return;
@@ -221,25 +164,21 @@ function renderCatalog({ mode, items }) {
 
   const cards = items.map((item, index) => {
     const number = String(index + 1).padStart(2, "0");
-    const name = item.title || item.name || `Костюм ${number}`;
-    const alt = item.alt || item.title || name;
-    const url = mode === "avito" ? safeItemUrl(item.url) : (item.url || SITE_CONFIG.avitoProfileUrl);
-    const price = mode === "avito" ? formatPrice(item) : "";
-    const sub = mode === "avito" ? "Авито" : `Фотография ${number}`;
-    const image = item.image || "";
+    const name = item.name || `Костюм ${number}`;
+    const alt = item.alt || name;
+    const url = item.url || SITE_CONFIG.avitoProfileUrl;
 
     return `<article class="product" style="--i:${index}">
       <a class="product__link" href="${escapeHtml(url)}" target="_blank" rel="noopener">
         <div class="product__media">
-          <img src="${escapeHtml(image)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async" referrerpolicy="no-referrer">
+          <img src="${escapeHtml(item.image || "")}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async">
           <span class="product__no">${number}</span>
           <span class="product__view"><span>Открыть в Авито</span><span aria-hidden="true">↗</span></span>
         </div>
         <div class="product__meta">
           <div>
             <h3 class="product__name">${escapeHtml(name)}</h3>
-            ${price ? `<p class="product__price">${escapeHtml(price)}</p>` : ""}
-            <p class="product__sub">${escapeHtml(sub)}</p>
+            <p class="product__sub">Фотография ${number}</p>
           </div>
           <span class="product__arrow" aria-hidden="true">↗</span>
         </div>

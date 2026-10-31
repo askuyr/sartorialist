@@ -1,20 +1,12 @@
 /**
- * Источник каталога:
- * "avito" — объявления и цены из data/avito-items.json (файл собирает tools/sync-avito.mjs).
- *            Если файл пуст или недоступен — автоматический откат на локальные фотографии.
- * "photos" — только локальные фотографии из assets/images/
- * "feed"   — загрузка объявлений с защищённого backend endpoint (SITE_CONFIG.avitoFeedUrl)
+ * Каталог собирается вручную из локальных фотографий assets/images/.
+ * Синхронизации с Авито нет: цены не подтягиваются, карточки ведут
+ * в профиль магазина по ссылке SITE_CONFIG.avitoProfileUrl.
  */
-export const CATALOG_SOURCE = "avito";
-
 export const SITE_CONFIG = {
   phone: "+79312992222",
   avitoProfileUrl: "https://www.avito.ru/brands/i205036214",
   galleryUrl: "https://ellenutelle.gallery.photo/gallery/maksim-kostumy-14rmew/",
-  // JSON с объявлениями и ценами, который собирает tools/sync-avito.mjs
-  avitoDataUrl: "data/avito-items.json",
-  // Заполняется после создания backend endpoint. Не вставлять client_secret сюда.
-  avitoFeedUrl: "",
 };
 
 export const PHOTO_ITEMS = [
