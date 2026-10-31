@@ -24,21 +24,85 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Store",
+    "@type": "ClothingStore",
     "name": "THE SARTORIALIST CLUB",
     "description": "Магазин мужских костюмов: референсы костюмов, образы и детали.",
     "url": "https://thesartorialistclub.ru/",
     "image": "https://thesartorialistclub.ru/assets/images/og-image.jpg",
     "telephone": "+7 931 299-22-22",
+    "priceRange": "от 20 000 ₽",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Кузнецовская улица, 21",
+      "addressLocality": "Санкт-Петербург",
+      "addressCountry": "RU"
+    },
+    "areaServed": "Санкт-Петербург",
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "10:00",
+        "closes": "23:00"
+      }
+    ],
     "sameAs": [
       "https://www.avito.ru/brands/i205036214",
       "https://ellenutelle.gallery.photo/gallery/maksim-kostumy-14rmew/"
     ]
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Где находится магазин?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Санкт-Петербург, Кузнецовская улица, 21. Приём только по предварительной договорённости, ежедневно с 10:00 до 23:00."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Сколько стоит костюм?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "От 20 000 ₽. Верхней границы нет: цена зависит от ткани, бренда и состояния конкретного лота."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Как записаться на примерку?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Позвоните по номеру +7 931 299-22-22 или напишите в профиль на Авито. Согласуем время, приём ежедневно с 10:00 до 23:00."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Можно ли подогнать костюм по фигуре?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Да. После выбора костюма работаем с портным, который корректирует посадку, и контролируем результат."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Подойдёт ли костюм мужчине невысокого роста?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Да. Подбираю костюм под рост и пропорции, включая точную длину пиджака и брюк."
+        }
+      }
+    ]
+  }
+  </script>
   <script>document.documentElement.classList.add("js");</script>
   <link rel="preload" as="image" href="assets/images/hero-banner.webp" imagesrcset="assets/images/hero-banner-900.webp 900w, assets/images/hero-banner-1400.webp 1400w, assets/images/hero-banner.webp 2200w" imagesizes="100vw" fetchpriority="high">
-  <link rel="stylesheet" href="assets/css/styles.css?v=15">
+  <link rel="stylesheet" href="assets/css/styles.css?v=16">
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержанию</a>
@@ -61,8 +125,9 @@
 
       <nav class="nav" id="nav" aria-label="Основная навигация">
         <a class="nav__link" href="#collection">Референсы</a>
-        <a class="nav__link" href="#about">О магазине</a>
-        <a class="nav__link" href="#details">Детали</a>
+        <a class="nav__link" href="kostyumy.html">Костюмы</a>
+        <a class="nav__link" href="podbor.html">Подбор</a>
+        <a class="nav__link" href="kontakty.html">Контакты</a>
         <div class="nav__extra">
           <a data-phone-link href="tel:+79312992222">Позвонить · +7 931 299-22-22</a>
           <a data-gallery-link href="https://ellenutelle.gallery.photo/gallery/maksim-kostumy-14rmew/" target="_blank" rel="noopener">Фотогалерея <span aria-hidden="true">↗</span></a>
@@ -307,6 +372,38 @@
         </div>
       </div>
     </section>
+
+    <section class="faq" id="faq">
+      <div class="shell">
+        <div class="faq__head">
+          <p class="label">06 / Вопросы</p>
+          <h2>Коротко<br><em>о главном.</em></h2>
+        </div>
+
+        <div class="faq__list">
+          <details>
+            <summary>Где находится магазин?</summary>
+            <p>Санкт-Петербург, Кузнецовская улица, 21. Приём только по предварительной договорённости, ежедневно с 10:00 до 23:00.</p>
+          </details>
+          <details>
+            <summary>Сколько стоит костюм?</summary>
+            <p>От 20 000 ₽. Верхней границы нет: цена зависит от ткани, бренда и состояния конкретного лота.</p>
+          </details>
+          <details>
+            <summary>Как записаться на примерку?</summary>
+            <p>Позвоните по номеру +7 931 299-22-22 или напишите в профиль на Авито. Согласуем время, приём ежедневно с 10:00 до 23:00.</p>
+          </details>
+          <details>
+            <summary>Можно ли подогнать костюм по фигуре?</summary>
+            <p>Да. После выбора костюма работаем с портным, который корректирует посадку, и контролируем результат.</p>
+          </details>
+          <details>
+            <summary>Подойдёт ли костюм мужчине невысокого роста?</summary>
+            <p>Да. Подбираю костюм под рост и пропорции, включая точную длину пиджака и брюк.</p>
+          </details>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -325,6 +422,9 @@
           <div class="footer__col">
             <span>Разделы</span>
             <a href="#collection">Референсы</a>
+            <a href="kostyumy.html">Костюмы</a>
+            <a href="podbor.html">Подбор костюма</a>
+            <a href="kontakty.html">Контакты</a>
             <a href="#about">О магазине</a>
             <a href="#details">Детали</a>
           </div>
