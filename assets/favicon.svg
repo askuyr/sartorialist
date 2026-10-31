@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="The Sartorialist Club">
+  <rect width="64" height="64" fill="#061b15"/>
+  <rect x="4.5" y="4.5" width="55" height="55" fill="none" stroke="#b09767" stroke-opacity=".55"/>
+  <text x="32" y="45" fill="#d9c9a3" font-family="Bodoni 72, Didot, Georgia, serif" font-size="34" text-anchor="middle">S</text>
+</svg>
