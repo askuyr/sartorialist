@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://askuyr.github.io/sartorialist/sitemap.xml
