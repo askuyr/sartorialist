@@ -1,4 +1,4 @@
-import { CATALOG_SOURCE, SITE_CONFIG, PHOTO_ITEMS } from "./config.js";
+import { CATALOG_SOURCE, SITE_CONFIG, PHOTO_ITEMS } from "./config.js?v=9";
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
