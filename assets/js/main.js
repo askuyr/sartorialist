@@ -105,206 +105,67 @@ if (canObserve) {
   revealItems.forEach((element) => element.classList.add("is-visible"));
 }
 
-/* ---------- Section scroll spy ---------- */
-
-const navLinks = $$(".nav__link");
-const sectionLinks = new Map(
-  navLinks
-    .map((link) => [link.getAttribute("href")?.replace("#", ""), link])
-    .filter(([id]) => Boolean(id)),
-);
-
-if ("IntersectionObserver" in window && sectionLinks.size) {
-  const visibleSections = new Set();
-  const spy = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) visibleSections.add(entry.target.id);
-      else visibleSections.delete(entry.target.id);
-    });
-
-    const currentId = [...visibleSections]
-      .sort((a, b) => document.getElementById(a).offsetTop - document.getElementById(b).offsetTop)[0];
-
-    navLinks.forEach((link) => {
-      const isActive = link.getAttribute("href") === `#${currentId}`;
-      link.classList.toggle("is-active", isActive);
-      if (isActive) link.setAttribute("aria-current", "true");
-      else link.removeAttribute("aria-current");
-    });
-  }, { rootMargin: "-45% 0px -50% 0px" });
-
-  sectionLinks.forEach((_, id) => {
-    const section = document.getElementById(id);
-    if (section) spy.observe(section);
-  });
-}
-
-/* ---------- Catalog ---------- */
+/* ---------- Suit index with preview ---------- */
 
 const catalogRoot = $("#catalog-content");
+const previewRoot = $("#lot-preview");
 
 function renderCatalog({ items }) {
   if (!catalogRoot) return;
 
-  const totalNode = $("[data-rail-total]");
-
   if (!items.length) {
-    if (totalNode) totalNode.textContent = "00";
-    catalogRoot.innerHTML = `<p class="catalog-empty"><span>Каталог пока не заполнен.</span><a class="link-underline" data-avito-link href="${escapeHtml(SITE_CONFIG.avitoProfileUrl)}" target="_blank" rel="noopener">Перейти в профиль <span aria-hidden="true">↗︎</span></a></p>`;
-    const avitoLink = $("[data-avito-link]", catalogRoot);
-    if (avitoLink) avitoLink.href = SITE_CONFIG.avitoProfileUrl;
+    catalogRoot.innerHTML = `<p class="catalog-empty">Список пока не заполнен. <a class="text-link" data-avito-link href="${escapeHtml(SITE_CONFIG.avitoProfileUrl)}" target="_blank" rel="noopener">Открыть профиль на Авито ↗</a></p>`;
     return;
   }
 
-  if (totalNode) totalNode.textContent = String(items.length).padStart(2, "0");
-
-  const cards = items.map((item, index) => {
-    const number = String(index + 1).padStart(2, "0");
-    const name = item.name || `Костюм ${number}`;
-    const alt = item.alt || name;
-    const url = item.url || SITE_CONFIG.avitoProfileUrl;
+  const rows = items.map((item, index) => {
+    const name = item.name || `Костюм ${index + 1}`;
     const image = item.image || "";
     const smallImage = image.replace(/\.webp$/, "-640.webp");
-    const srcset = image.endsWith(".webp")
-      ? ` srcset="${escapeHtml(smallImage)} 640w, ${escapeHtml(image)} 1000w" sizes="(max-width: 700px) 74vw, 23vw"`
-      : "";
 
-    return `<article class="product" style="--i:${index}">
-      <a class="product__link" href="${escapeHtml(url)}" target="_blank" rel="noopener">
-        <div class="product__media">
-          <img src="${escapeHtml(image)}"${srcset} alt="${escapeHtml(alt)}" width="1000" height="1500" loading="lazy" decoding="async">
-          <span class="product__no">${number}</span>
-          <span class="product__view"><span>Костюмы на Авито</span><span aria-hidden="true">↗︎</span></span>
-        </div>
-        <div class="product__meta">
-          <div>
-            <h3 class="product__name">${escapeHtml(name)}</h3>
-            <p class="product__sub">Референс ${number}</p>
-          </div>
-          <span class="product__arrow" aria-hidden="true">↗︎</span>
-        </div>
-      </a>
-    </article>`;
+    return `<button class="lot-row" type="button" data-lot="${index}" data-image="${escapeHtml(image)}" data-name="${escapeHtml(name)}">
+      <img class="lot-row__thumb" src="${escapeHtml(smallImage)}" alt="" width="64" height="85" loading="lazy" decoding="async">
+      <span class="lot-row__name">${escapeHtml(name)}</span>
+      <span class="lot-row__arrow" aria-hidden="true">↗</span>
+    </button>`;
   }).join("");
 
-  catalogRoot.innerHTML = `
-    <div class="catalog-rail" data-rail tabindex="0" role="region" aria-label="Референсы костюмов">
-      ${cards}
-    </div>
-    <div class="rail-progress" aria-hidden="true"><span></span></div>
-  `;
-
-  initRail();
+  catalogRoot.innerHTML = `<div class="lots__list">${rows}</div>`;
+  initIndex(items);
 }
 
-function initRail() {
-  const rail = $("[data-rail]", catalogRoot);
-  const previous = $("[data-rail-prev]");
-  const next = $("[data-rail-next]");
-  const current = $("[data-rail-current]");
-  const progress = $(".rail-progress span", catalogRoot);
-  if (!rail) return;
+function initIndex(items) {
+  if (!catalogRoot || !previewRoot) return;
 
-  const cards = $$(".product", rail);
-  if (!cards.length) return;
+  const rows = $$(".lot-row", catalogRoot);
+  const layers = $$("img", previewRoot);
+  const captionName = $("[data-lot-name]", previewRoot);
+  if (!rows.length || layers.length < 2) return;
 
-  const gap = () => parseFloat(getComputedStyle(rail).columnGap) || 0;
-  const step = () => cards[0].getBoundingClientRect().width + gap();
-  const maxScroll = () => Math.max(0, rail.scrollWidth - rail.clientWidth);
+  let front = 0;
 
-  const update = () => {
-    const max = maxScroll();
-    const x = rail.scrollLeft;
-    const firstVisible = cards.findIndex((card) => card.offsetLeft + card.offsetWidth > x + 8);
-    const index = firstVisible === -1 ? cards.length : firstVisible + 1;
+  const show = (index) => {
+    const item = items[index];
+    if (!item) return;
 
-    if (current) current.textContent = String(index).padStart(2, "0");
-    if (previous) previous.disabled = x <= 2;
-    if (next) next.disabled = x >= max - 2;
+    const next = layers[1 - front];
+    next.src = item.image;
+    next.alt = item.alt || item.name || "";
+    next.classList.add("is-on");
+    layers[front].classList.remove("is-on");
+    front = 1 - front;
 
-    if (progress) {
-      const thumb = Math.min(1, rail.clientWidth / rail.scrollWidth);
-      const ratio = max > 0 ? x / max : 0;
-      progress.style.width = `${Math.max(thumb, 0.1) * 100}%`;
-      progress.style.transform = `translateX(${ratio * (1 / Math.max(thumb, 0.1) - 1) * 100}%)`;
-    }
+    if (captionName) captionName.textContent = item.name || "";
+    rows.forEach((row, rowIndex) => row.classList.toggle("is-active", rowIndex === index));
   };
 
-  let frame = 0;
-  const requestUpdate = () => {
-    if (frame) return;
-    frame = window.requestAnimationFrame(() => {
-      frame = 0;
-      update();
-    });
-  };
-
-  const scrollByCards = (direction) => {
-    const cardsPerView = window.innerWidth > 900 ? 2 : 1;
-    rail.scrollBy({
-      left: direction * step() * cardsPerView,
-      behavior: prefersReducedMotion.matches ? "auto" : "smooth",
-    });
-  };
-
-  previous?.addEventListener("click", () => scrollByCards(-1));
-  next?.addEventListener("click", () => scrollByCards(1));
-  rail.addEventListener("scroll", requestUpdate, { passive: true });
-  window.addEventListener("resize", requestUpdate, { passive: true });
-
-  rail.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowRight") {
-      event.preventDefault();
-      scrollByCards(1);
-    }
-    if (event.key === "ArrowLeft") {
-      event.preventDefault();
-      scrollByCards(-1);
-    }
+  rows.forEach((row, index) => {
+    row.addEventListener("mouseenter", () => show(index));
+    row.addEventListener("focus", () => show(index));
+    row.addEventListener("click", () => show(index));
   });
 
-  let isDown = false;
-  let dragged = false;
-  let startX = 0;
-  let startLeft = 0;
-
-  rail.addEventListener("pointerdown", (event) => {
-    if (event.pointerType !== "mouse") return;
-    isDown = true;
-    dragged = false;
-    startX = event.clientX;
-    startLeft = rail.scrollLeft;
-  });
-
-  rail.addEventListener("pointermove", (event) => {
-    if (!isDown) return;
-    const delta = event.clientX - startX;
-    if (!dragged) {
-      if (Math.abs(delta) <= 5) return;
-      dragged = true;
-      rail.classList.add("is-dragging");
-      rail.setPointerCapture(event.pointerId);
-    }
-    rail.scrollLeft = startLeft - delta;
-  });
-
-  const endDrag = (event) => {
-    if (!isDown) return;
-    isDown = false;
-    rail.classList.remove("is-dragging");
-    if (rail.hasPointerCapture(event.pointerId)) rail.releasePointerCapture(event.pointerId);
-  };
-
-  rail.addEventListener("pointerup", endDrag);
-  rail.addEventListener("pointercancel", endDrag);
-  rail.addEventListener("click", (event) => {
-    if (!dragged) return;
-    event.preventDefault();
-    event.stopPropagation();
-    dragged = false;
-  }, true);
-
-  update();
+  show(0);
 }
 
 renderCatalog({ items: PHOTO_ITEMS });
