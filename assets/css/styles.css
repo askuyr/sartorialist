@@ -29,7 +29,7 @@
   --line-dark: rgba(244, 241, 234, .18);
 
   /* type */
-  --serif: "Bodoni Moda", "Bodoni MT", Didot, "Baskerville", Georgia, "Times New Roman", serif;
+  --serif: "Playfair Display", "Bodoni MT", Didot, "Baskerville", Georgia, "Times New Roman", serif;
   --sans: "Jost", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* layout */
@@ -1329,6 +1329,24 @@ h2 em.light { color: var(--bronze-2); }
   white-space: nowrap;
 }
 .footer__word::before { content: "SARTORIALIST"; }
+.footer__legal {
+  display: grid;
+  gap: 6px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line-dark);
+  color: rgba(244, 241, 234, .55);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.footer__legal p { max-width: 980px; }
+.footer__legal a {
+  color: rgba(244, 241, 234, .74);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color .25s var(--ease);
+}
+.footer__legal a:hover { color: var(--cream); }
+
 .footer__bottom {
   display: flex;
   flex-wrap: wrap;
@@ -1397,6 +1415,18 @@ h2 em.light { color: var(--bronze-2); }
   line-height: 1.85;
 }
 .prose p + p { margin-top: 12px; }
+.prose ul {
+  margin: 12px 0 0;
+  padding-left: 1.15em;
+  list-style: disc;
+}
+.prose li {
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.8;
+}
+.prose li + li { margin-top: 4px; }
+.prose strong { color: var(--ink); font-weight: 500; }
 .prose .link-underline { margin-top: 18px; }
 .page__actions {
   display: flex;
@@ -1404,6 +1434,10 @@ h2 em.light { color: var(--bronze-2); }
   gap: 14px;
   margin-top: 36px;
 }
+
+.page__body--single { grid-template-columns: minmax(0, 1fr); }
+.page__body--single .prose { max-width: 780px; }
+.page__body--single .prose h2 { margin-top: 44px; }
 
 .info {
   position: sticky;
