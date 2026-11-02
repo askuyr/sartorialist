@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#061b15">
+  <meta name="theme-color" content="#f4f1ea">
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <script>if (location.protocol === "http:" && !/^(localhost|127\.0\.0\.1|\[::1\]|192\.168\.)/.test(location.hostname)) location.replace("https://" + location.host + location.pathname + location.search + location.hash);</script>
   <meta name="description" content="Личный подбор мужского костюма: силуэт, ткань и посадка под вашу задачу. Санкт-Петербург, Кузнецовская 21, по записи. От 20 000 ₽.">
@@ -47,23 +47,26 @@
     }
   }
   </script>
-  <link rel="stylesheet" href="assets/css/styles.css?v=17">
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/styles.css?v=18">
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержанию</a>
 
-  <div class="announce">
-    <p>
-      <span class="announce__full">Мужские костюмы <span aria-hidden="true">·</span> Классика в современном прочтении</span>
-      <span class="announce__short">Мужские костюмы</span>
-    </p>
-    <a data-avito-link href="https://www.avito.ru/brands/i205036214" target="_blank" rel="noopener">
-      <span class="announce__full">Профиль на Авито</span><span class="announce__short">Авито</span> <span aria-hidden="true">↗︎</span>
-    </a>
-  </div>
-
   <header class="header" id="header">
     <div class="header__inner">
+      <a class="brand" href="index.html">
+        <span class="brand__mark" aria-hidden="true">SC</span>
+        <span class="brand__text">
+          <span class="brand__the">The</span>
+          <span class="brand__name">Sartorialist</span>
+          <span class="brand__club">Club</span>
+        </span>
+      </a>
+
       <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav">
         <span></span><span></span>
       </button>
@@ -80,18 +83,11 @@
         </div>
       </nav>
 
-      <a class="brand" href="index.html" aria-label="THE SARTORIALIST CLUB — на главную">
-        <span class="brand__the">THE</span>
-        <span class="brand__name">SARTORIALIST</span>
-        <span class="brand__club">CLUB</span>
-      </a>
-
       <div class="header__actions">
         <a class="header__link header__link--phone" data-phone-link href="tel:+79312992222">+7 931 299-22-22</a>
         <span class="header__divider" aria-hidden="true"></span>
-        <a class="header__link" data-gallery-link href="https://ellenutelle.gallery.photo/gallery/maksim-kostumy-14rmew/" target="_blank" rel="noopener">Фотогалерея <span aria-hidden="true">↗︎</span></a>
-        <span class="header__divider" aria-hidden="true"></span>
-        <a class="header__link header__link--gold" data-avito-link href="https://www.avito.ru/brands/i205036214" target="_blank" rel="noopener">Авито <span aria-hidden="true">↗︎</span></a>
+        <a class="header__link" data-gallery-link href="https://ellenutelle.gallery.photo/gallery/maksim-kostumy-14rmew/" target="_blank" rel="noopener">Фотогалерея</a>
+        <a class="header__cta" data-avito-link href="https://www.avito.ru/brands/i205036214" target="_blank" rel="noopener">Авито <span aria-hidden="true">↗︎</span></a>
       </div>
     </div>
   </header>
@@ -156,10 +152,13 @@
     <div class="shell">
       <div class="footer__top">
         <div class="footer__brand-block">
-          <a class="brand footer__brand" href="index.html" aria-label="THE SARTORIALIST CLUB — на главную">
-            <span class="brand__the">THE</span>
-            <span class="brand__name">SARTORIALIST</span>
-            <span class="brand__club">CLUB</span>
+          <a class="brand footer__brand" href="index.html">
+            <span class="brand__mark" aria-hidden="true">SC</span>
+            <span class="brand__text">
+              <span class="brand__the">The</span>
+              <span class="brand__name">Sartorialist</span>
+              <span class="brand__club">Club</span>
+            </span>
           </a>
           <p class="footer__tagline">Мужские костюмы с точной посадкой.<br>Классика в современном прочтении.</p>
         </div>
@@ -181,7 +180,7 @@
         </div>
       </div>
 
-      <div class="footer__word" aria-hidden="true">SARTORIALIST</div>
+      <div class="footer__word" aria-hidden="true"></div>
 
       <div class="footer__bottom">
         <span>THE SARTORIALIST CLUB</span>
@@ -191,6 +190,6 @@
     </div>
   </footer>
 
-  <script type="module" src="assets/js/main.js?v=15"></script>
+  <script type="module" src="assets/js/main.js?v=16"></script>
 </body>
 </html>
