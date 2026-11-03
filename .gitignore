@@ -1,3 +1,6 @@
 # Системный мусор
 .DS_Store
 Thumbs.db
+
+# Рабочие файлы Taste skill
+.taste-skill/
