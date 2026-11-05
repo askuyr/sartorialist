@@ -103,7 +103,7 @@
   <script>document.documentElement.classList.add("js");</script>
   <link rel="preload" as="image" href="assets/images/editorial-store-01-900.webp" imagesrcset="assets/images/editorial-store-01-600.webp 600w, assets/images/editorial-store-01-900.webp 900w, assets/images/editorial-store-01.webp 1600w" imagesizes="(max-width: 900px) 100vw, 48vw" fetchpriority="high">
   <link rel="stylesheet" href="assets/css/fonts.css?v=1">
-  <link rel="stylesheet" href="assets/css/styles.css?v=21">
+  <link rel="stylesheet" href="assets/css/styles.css?v=22">
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержанию</a>
@@ -167,6 +167,12 @@
         <div class="marquee__group">
           <span>Мужские костюмы</span><i>◆</i><span>Внимание к деталям</span><i>◆</i><span>Классика в современном прочтении</span><i>◆</i><span>The Sartorialist Club</span><i>◆</i>
         </div>
+        <div class="marquee__group">
+          <span>Мужские костюмы</span><i>◆</i><span>Внимание к деталям</span><i>◆</i><span>Классика в современном прочтении</span><i>◆</i><span>The Sartorialist Club</span><i>◆</i>
+        </div>
+        <div class="marquee__group">
+          <span>Мужские костюмы</span><i>◆</i><span>Внимание к деталям</span><i>◆</i><span>Классика в современном прочтении</span><i>◆</i><span>The Sartorialist Club</span><i>◆</i>
+        </div>
       </div>
     </div>
 
@@ -191,16 +197,18 @@
 
     <section class="gallery" id="gallery">
       <div class="shell">
-        <div class="gallery__stage">
-          <div class="gallery__head">
+        <div class="section-head reveal">
+          <div>
             <h2>Галерея</h2>
-            <p>Костюмы из личного отбора. Фотографии без обработки; лоты, наличие и цены на Авито.</p>
-            <a class="text-link" data-avito-link href="https://www.avito.ru/brands/i205036214" target="_blank" rel="noopener">Смотреть лоты на Авито ↗</a>
           </div>
+          <div class="section-head__aside">
+            <p>Костюмы из личного отбора: посадка, ткань, детали. Фотографии без обработки.</p>
+            <a class="text-link" data-gallery-link href="https://ellenutelle.gallery.photo/gallery/maksim-kostumy-14rmew/" target="_blank" rel="noopener">Все кадры в фотогалерее ↗</a>
+          </div>
+        </div>
 
-          <div class="gallery__scatter" id="gallery-grid" aria-label="Фотографии костюмов">
-            <noscript><p class="catalog-empty">Для отображения галереи включите JavaScript. <a class="text-link" data-avito-link href="https://www.avito.ru/brands/i205036214">Лоты на Авито ↗</a></p></noscript>
-          </div>
+        <div class="gallery__grid reveal" id="gallery-grid" aria-label="Фотографии костюмов">
+          <noscript><p class="catalog-empty">Для отображения галереи включите JavaScript. <a class="text-link" data-gallery-link href="https://ellenutelle.gallery.photo/gallery/maksim-kostumy-14rmew/">Фотогалерея ↗</a></p></noscript>
         </div>
       </div>
     </section>
@@ -402,6 +410,6 @@
     </div>
   </footer>
 
-  <script type="module" src="assets/js/main.js?v=18"></script>
+  <script type="module" src="assets/js/main.js?v=19"></script>
 </body>
 </html>

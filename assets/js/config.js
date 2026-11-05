@@ -2,6 +2,7 @@
  * Галерея собирается вручную из локальных фотографий assets/images/.
  * Сайт показывает галерею, а не карточки товаров: лоты, цены и наличие
  * остаются в профиле магазина на Авито. Синхронизации с Авито нет.
+ * Кадры взяты из фотогалереи gallery.photo (galleryUrl) и сохранены локально.
  */
 export const SITE_CONFIG = {
   phone: "+79312992222",
@@ -10,28 +11,20 @@ export const SITE_CONFIG = {
 };
 
 export const PHOTO_ITEMS = [
-  { image: "assets/images/suit-01.webp", name: "Тёмно-серый костюм", alt: "Тёмно-серый мужской костюм" },
-  { image: "assets/images/suit-02.webp", name: "Коричневый костюм", alt: "Коричневый мужской костюм" },
-  { image: "assets/images/suit-03.webp", name: "Тёмно-синий костюм", alt: "Тёмно-синий мужской костюм" },
-  { image: "assets/images/suit-04.webp", name: "Светло-голубой костюм", alt: "Светло-голубой мужской костюм" },
-  { image: "assets/images/suit-05.webp", name: "Графитовый костюм", alt: "Графитовый мужской костюм" },
-  { image: "assets/images/suit-06.webp", name: "Синий костюм", alt: "Синий мужской костюм" },
-  { image: "assets/images/suit-07.webp", name: "Серый костюм", alt: "Серый мужской костюм" },
-  { image: "assets/images/suit-08.webp", name: "Тёмно-синий костюм", alt: "Тёмно-синий мужской костюм" },
-  { image: "assets/images/suit-09.webp", name: "Коричневый костюм", alt: "Коричневый мужской костюм" },
-  { image: "assets/images/suit-10.webp", name: "Светлый костюм", alt: "Светлый мужской костюм" },
-  { image: "assets/images/suit-11.webp", name: "Костюм в клетку", alt: "Мужской костюм в клетку" },
-  { image: "assets/images/suit-12.webp", name: "Классический синий костюм", alt: "Классический синий мужской костюм" },
-  { image: "assets/images/suit-13.webp", name: "Тёмно-синий костюм в полоску", alt: "Тёмно-синий мужской костюм в светлую полоску" },
-  { image: "assets/images/suit-14.webp", name: "Коричневый костюм с платком", alt: "Коричневый мужской костюм с нагрудным платком" },
-  { image: "assets/images/suit-15.webp", name: "Бежевый костюм с платком", alt: "Бежевый мужской костюм с нагрудным платком" },
-  { image: "assets/images/suit-16.webp", name: "Голубой костюм в клетку", alt: "Голубой мужской костюм в клетку" },
-  { image: "assets/images/suit-17.webp", name: "Серый костюм в полоску", alt: "Серый мужской костюм в тонкую полоску" },
-  { image: "assets/images/suit-18.webp", name: "Графитовый костюм с бордовым галстуком", alt: "Графитовый мужской костюм с бордовым галстуком" },
-  { image: "assets/images/suit-19.webp", name: "Синий костюм с голубым галстуком", alt: "Синий мужской костюм с голубым галстуком" },
-  { image: "assets/images/suit-20.webp", name: "Тёмно-синий костюм с платком", alt: "Тёмно-синий мужской костюм с нагрудным платком" },
-  { image: "assets/images/suit-21.webp", name: "Светло-серый костюм с красным галстуком", alt: "Светло-серый мужской костюм с красным галстуком" },
-  { image: "assets/images/suit-22.webp", name: "Костюм в тёмную клетку", alt: "Мужской костюм в тёмную клетку" },
-  { image: "assets/images/suit-23.webp", name: "Синий костюм в клетку", alt: "Синий мужской костюм в клетку" },
-  { image: "assets/images/suit-24.webp", name: "Чёрный смокинг", alt: "Чёрный мужской смокинг с бабочкой" },
+  { image: "assets/images/gallery-01.webp", alt: "Максим в клетчатом костюме и бордовом галстуке" },
+  { image: "assets/images/gallery-02.webp", alt: "Петля и пуговица на рукаве синего пиджака" },
+  { image: "assets/images/gallery-03.webp", alt: "Серый костюм с белой рубашкой на манекене" },
+  { image: "assets/images/gallery-04.webp", wide: true, alt: "Рейлы с мужскими костюмами в торговом зале" },
+  { image: "assets/images/gallery-05.webp", alt: "Брюки в тонкую полоску, задний карман" },
+  { image: "assets/images/gallery-06.webp", alt: "Синий костюм с серым галстуком на манекене" },
+  { image: "assets/images/gallery-07.webp", alt: "Серое двубортное пальто на манекене" },
+  { image: "assets/images/gallery-08.webp", wide: true, alt: "Кресло и столик с кофе в торговом зале" },
+  { image: "assets/images/gallery-09.webp", alt: "Внутренний ярлык пиджака с ручной вышивкой" },
+  { image: "assets/images/gallery-10.webp", alt: "Тёмный костюм в полоску с бордовым галстуком" },
+  { image: "assets/images/gallery-11.webp", alt: "Тёмно-синий костюм с нагрудным платком на манекене" },
+  { image: "assets/images/gallery-12.webp", wide: true, alt: "Два кресла и столик в торговом зале" },
+  { image: "assets/images/gallery-13.webp", alt: "Петли и пуговицы на рукаве тёмно-синего пиджака" },
+  { image: "assets/images/gallery-14.webp", alt: "Пуговицы и петли на рукаве светлого пиджака" },
+  { image: "assets/images/gallery-15.webp", wide: true, alt: "Рейлы с костюмами и кресло в зале магазина" },
+  { image: "assets/images/gallery-16.webp", alt: "Максим в костюме сидит в кресле в зале магазина" },
 ];

@@ -1,4 +1,4 @@
-import { SITE_CONFIG, PHOTO_ITEMS } from "./config.js?v=13";
+import { SITE_CONFIG, PHOTO_ITEMS } from "./config.js?v=14";
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -146,53 +146,21 @@ const galleryRoot = $("#gallery-grid");
 function renderGallery({ items }) {
   if (!galleryRoot) return;
 
-  const picks = items.slice(0, 8);
-
-  if (!picks.length) {
+  if (!items.length) {
     galleryRoot.innerHTML = `<p class="catalog-empty">Галерея пока не заполнена. <a class="text-link" data-avito-link href="${escapeHtml(SITE_CONFIG.avitoProfileUrl)}" target="_blank" rel="noopener">Лоты на Авито ↗</a></p>`;
     return;
   }
 
-  galleryRoot.innerHTML = picks.map((item, index) => {
+  galleryRoot.innerHTML = items.map((item, index) => {
     const image = item.image || "";
     const smallImage = image.replace(/\.webp$/, "-640.webp");
-    const alt = item.alt || item.name || `Костюм ${index + 1}`;
+    const alt = item.alt || `Костюм ${index + 1}`;
+    const height = item.wide ? 800 : 1800;
 
-    return `<figure class="gallery__print gallery__print--${index + 1}" data-drift="${8 + index * 2}">
-      <img src="${escapeHtml(image)}" srcset="${escapeHtml(smallImage)} 640w, ${escapeHtml(image)} 1000w" sizes="(max-width: 900px) 50vw, 14vw" alt="${escapeHtml(alt)}" width="1000" height="1500" loading="lazy" decoding="async">
+    return `<figure class="gallery__item">
+      <img src="${escapeHtml(image)}" srcset="${escapeHtml(smallImage)} 640w, ${escapeHtml(image)} 1200w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="${escapeHtml(alt)}" width="1200" height="${height}" loading="lazy" decoding="async">
     </figure>`;
   }).join("");
-
-  initGalleryDrift();
-}
-
-function initGalleryDrift() {
-  const prints = $$(".gallery__print", galleryRoot);
-  if (!prints.length || prefersReducedMotion.matches) return;
-  if (!window.matchMedia("(min-width: 901px)").matches) return;
-
-  let frame = 0;
-
-  const update = () => {
-    frame = 0;
-    const viewport = window.innerHeight;
-
-    prints.forEach((element) => {
-      const rect = element.getBoundingClientRect();
-      const progress = (rect.top + rect.height / 2 - viewport / 2) / viewport;
-      const rate = Number(element.dataset.drift) || 8;
-      element.style.transform = `translateY(${Math.round(progress * rate)}px)`;
-    });
-  };
-
-  const requestUpdate = () => {
-    if (frame) return;
-    frame = window.requestAnimationFrame(update);
-  };
-
-  window.addEventListener("scroll", requestUpdate, { passive: true });
-  window.addEventListener("resize", requestUpdate, { passive: true });
-  update();
 }
 
 renderGallery({ items: PHOTO_ITEMS });
