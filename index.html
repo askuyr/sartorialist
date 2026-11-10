@@ -103,7 +103,9 @@
   <script>document.documentElement.classList.add("js");</script>
   <link rel="preload" as="image" href="assets/images/editorial-store-01-900.webp" imagesrcset="assets/images/editorial-store-01-600.webp 600w, assets/images/editorial-store-01-900.webp 900w, assets/images/editorial-store-01.webp 1600w" imagesizes="(max-width: 900px) 100vw, 48vw" fetchpriority="high">
   <link rel="stylesheet" href="assets/css/fonts.css?v=1">
-  <link rel="stylesheet" href="assets/css/styles.css?v=22">
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/jost-normal-300-600-cyrillic.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/playfair-display-normal-400-700-cyrillic.woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/styles.css?v=23">
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержанию</a>
@@ -208,7 +210,86 @@
         </div>
 
         <div class="gallery__grid reveal" id="gallery-grid" aria-label="Фотографии костюмов">
-          <noscript><p class="catalog-empty">Для отображения галереи включите JavaScript. <a class="text-link" data-gallery-link href="https://ellenutelle.gallery.photo/gallery/maksim-kostumy-14rmew/">Фотогалерея ↗</a></p></noscript>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Максим в клетчатом костюме и бордовом галстуке">
+              <img src="assets/images/gallery-01.webp" srcset="assets/images/gallery-01-640.webp 640w, assets/images/gallery-01.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Максим в клетчатом костюме и бордовом галстуке" width="900" height="1350" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Петля и пуговица на рукаве синего пиджака">
+              <img src="assets/images/gallery-02.webp" srcset="assets/images/gallery-02-640.webp 640w, assets/images/gallery-02.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Петля и пуговица на рукаве синего пиджака" width="900" height="1350" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Серый костюм с белой рубашкой на манекене">
+              <img src="assets/images/gallery-03.webp" srcset="assets/images/gallery-03-640.webp 640w, assets/images/gallery-03.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Серый костюм с белой рубашкой на манекене" width="900" height="1350" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Рейлы с мужскими костюмами в торговом зале">
+              <img src="assets/images/gallery-04.webp" srcset="assets/images/gallery-04-640.webp 640w, assets/images/gallery-04.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Рейлы с мужскими костюмами в торговом зале" width="900" height="600" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Брюки в тонкую полоску, задний карман">
+              <img src="assets/images/gallery-05.webp" srcset="assets/images/gallery-05-640.webp 640w, assets/images/gallery-05.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Брюки в тонкую полоску, задний карман" width="900" height="1350" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Синий костюм с серым галстуком на манекене">
+              <img src="assets/images/gallery-06.webp" srcset="assets/images/gallery-06-640.webp 640w, assets/images/gallery-06.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Синий костюм с серым галстуком на манекене" width="900" height="1350" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Серое двубортное пальто на манекене">
+              <img src="assets/images/gallery-07.webp" srcset="assets/images/gallery-07-640.webp 640w, assets/images/gallery-07.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Серое двубортное пальто на манекене" width="900" height="1350" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Кресло и столик с кофе в торговом зале">
+              <img src="assets/images/gallery-08.webp" srcset="assets/images/gallery-08-640.webp 640w, assets/images/gallery-08.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Кресло и столик с кофе в торговом зале" width="900" height="600" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Внутренний ярлык пиджака с ручной вышивкой">
+              <img src="assets/images/gallery-09.webp" srcset="assets/images/gallery-09-640.webp 640w, assets/images/gallery-09.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Внутренний ярлык пиджака с ручной вышивкой" width="900" height="1350" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Тёмный костюм в полоску с бордовым галстуком">
+              <img src="assets/images/gallery-10.webp" srcset="assets/images/gallery-10-640.webp 640w, assets/images/gallery-10.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Тёмный костюм в полоску с бордовым галстуком" width="900" height="1350" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Тёмно-синий костюм с нагрудным платком на манекене">
+              <img src="assets/images/gallery-11.webp" srcset="assets/images/gallery-11-640.webp 640w, assets/images/gallery-11.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Тёмно-синий костюм с нагрудным платком на манекене" width="900" height="1350" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Два кресла и столик в торговом зале">
+              <img src="assets/images/gallery-12.webp" srcset="assets/images/gallery-12-640.webp 640w, assets/images/gallery-12.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Два кресла и столик в торговом зале" width="900" height="600" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Петли и пуговицы на рукаве тёмно-синего пиджака">
+              <img src="assets/images/gallery-13.webp" srcset="assets/images/gallery-13-640.webp 640w, assets/images/gallery-13.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Петли и пуговицы на рукаве тёмно-синего пиджака" width="900" height="1350" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Пуговицы и петли на рукаве светлого пиджака">
+              <img src="assets/images/gallery-14.webp" srcset="assets/images/gallery-14-640.webp 640w, assets/images/gallery-14.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Пуговицы и петли на рукаве светлого пиджака" width="900" height="1350" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Рейлы с костюмами и кресло в зале магазина">
+              <img src="assets/images/gallery-15.webp" srcset="assets/images/gallery-15-640.webp 640w, assets/images/gallery-15.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Рейлы с костюмами и кресло в зале магазина" width="900" height="600" loading="lazy" decoding="async">
+            </button>
+          </figure>
+          <figure class="gallery__item">
+            <button class="gallery__btn" type="button" aria-label="Открыть фото крупно: Максим в костюме сидит в кресле в зале магазина">
+              <img src="assets/images/gallery-16.webp" srcset="assets/images/gallery-16-640.webp 640w, assets/images/gallery-16.webp 900w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="Максим в костюме сидит в кресле в зале магазина" width="900" height="1350" loading="lazy" decoding="async">
+            </button>
+          </figure>
         </div>
       </div>
     </section>
@@ -410,6 +491,11 @@
     </div>
   </footer>
 
-  <script type="module" src="assets/js/main.js?v=19"></script>
+  <dialog class="lightbox" id="lightbox" aria-label="Просмотр фотографии">
+    <button class="lightbox__close" type="button" aria-label="Закрыть просмотр">×</button>
+    <img class="lightbox__img" alt="">
+  </dialog>
+
+  <script type="module" src="assets/js/main.js?v=20"></script>
 </body>
 </html>

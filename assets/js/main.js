@@ -1,15 +1,7 @@
-import { SITE_CONFIG, PHOTO_ITEMS } from "./config.js?v=14";
+import { SITE_CONFIG } from "./config.js?v=15";
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
-
-const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (char) => ({
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
-  "'": "&#39;",
-}[char]));
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -139,28 +131,26 @@ if ("IntersectionObserver" in window && sectionLinks.size) {
   });
 }
 
-/* ---------- Gallery ---------- */
+/* ---------- Gallery lightbox ---------- */
 
 const galleryRoot = $("#gallery-grid");
+const lightbox = $("#lightbox");
 
-function renderGallery({ items }) {
-  if (!galleryRoot) return;
+if (galleryRoot && lightbox && typeof lightbox.showModal === "function") {
+  const lightboxImage = $(".lightbox__img", lightbox);
 
-  if (!items.length) {
-    galleryRoot.innerHTML = `<p class="catalog-empty">Галерея пока не заполнена. <a class="text-link" data-avito-link href="${escapeHtml(SITE_CONFIG.avitoProfileUrl)}" target="_blank" rel="noopener">Лоты на Авито ↗</a></p>`;
-    return;
-  }
+  galleryRoot.addEventListener("click", (event) => {
+    const button = event.target.closest(".gallery__btn");
+    if (!button) return;
+    const image = $("img", button);
+    lightboxImage.src = image.src;
+    lightboxImage.alt = image.alt;
+    lightbox.showModal();
+  });
 
-  galleryRoot.innerHTML = items.map((item, index) => {
-    const image = item.image || "";
-    const smallImage = image.replace(/\.webp$/, "-640.webp");
-    const alt = item.alt || `Костюм ${index + 1}`;
-    const height = item.wide ? 800 : 1800;
+  lightbox.addEventListener("click", (event) => {
+    if (event.target === lightbox || event.target.closest(".lightbox__close")) lightbox.close();
+  });
 
-    return `<figure class="gallery__item">
-      <img src="${escapeHtml(image)}" srcset="${escapeHtml(smallImage)} 640w, ${escapeHtml(image)} 1200w" sizes="(max-width: 700px) 44vw, (max-width: 900px) 29vw, 22vw" alt="${escapeHtml(alt)}" width="1200" height="${height}" loading="lazy" decoding="async">
-    </figure>`;
-  }).join("");
+  lightbox.addEventListener("close", () => lightboxImage.removeAttribute("src"));
 }
-
-renderGallery({ items: PHOTO_ITEMS });

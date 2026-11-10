@@ -447,6 +447,48 @@ em { font-style: normal; color: inherit; }
   height: auto;
   filter: saturate(.94) contrast(1.02);
 }
+.gallery__btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+.gallery__btn img { transition: opacity .3s var(--ease); }
+.gallery__btn:hover img { opacity: .86; }
+
+/* photo lightbox */
+.lightbox {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+.lightbox::backdrop { background: rgba(13, 22, 17, .92); }
+.lightbox__img {
+  display: block;
+  width: auto;
+  max-width: 92vw;
+  max-height: 86vh;
+  height: auto;
+  margin: auto;
+}
+.lightbox__close {
+  position: fixed;
+  top: 14px;
+  right: 18px;
+  z-index: 1;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(247, 247, 246, .16);
+  color: var(--paper);
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+}
 
 /* ---------- Statement ---------- */
 
